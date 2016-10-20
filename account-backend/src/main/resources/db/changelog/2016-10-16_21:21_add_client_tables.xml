@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+    <changeSet id="2016-10-16 21:21 add client tables" author="">
+        <createTable tableName="client">
+            <column name="id" type="character varying">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="client_secret"  type="character varying" />
+        </createTable>
+
+        <createTable tableName="auto_approve_scopes">
+            <column name="client_id" type="character varying">
+                <constraints primaryKey="true" foreignKeyName="auto_approve_scopes__client" references="client(id)" />
+            </column>
+            <column name="scope" type="character varying">
+                <constraints primaryKey="true" />
+            </column>
+        </createTable>
+
+        <createTable tableName="resource_ids">
+            <column name="client_id" type="character varying">
+                <constraints primaryKey="true"  foreignKeyName="resource_ids__client" references="client(id)" />
+            </column>
+            <column name="resource_id" type="character varying">
+                <constraints primaryKey="true" />
+            </column>
+        </createTable>
+
+        <createTable tableName="scope">
+            <column name="client_id" type="character varying">
+                <constraints primaryKey="true"  foreignKeyName="scope__client" references="client(id)" />
+            </column>
+            <column name="scope" type="character varying">
+                <constraints primaryKey="true" />
+            </column>
+        </createTable>
+
+        <createTable tableName="authorized_grant_types">
+            <column name="client_id" type="character varying">
+                <constraints primaryKey="true"  foreignKeyName="authorized_grant_types__client" references="client(id)" />
+            </column>
+            <column name="grant_type" type="character varying">
+                <constraints primaryKey="true" />
+            </column>
+        </createTable>
+        <createTable tableName="redirect_uris">
+            <column name="client_id" type="character varying">
+                <constraints primaryKey="true"  foreignKeyName="redirect_uris__client" references="client(id)" />
+            </column>
+            <column name="redirect_uri" type="character varying">
+                <constraints primaryKey="true" />
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="2016-10-16 22:04 rename client table -> clients" author="krzyzak">
+        <renameTable oldTableName="client" newTableName="clients" />
+    </changeSet>
+
+    <changeSet id="2016-10-16 22:04 add client name column" author="krzyzak">
+        <addColumn tableName="clients">
+            <column name="name" type="character varying" />
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Demo</title>
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" href="css/theme.css" />
+
+<link rel="stylesheet" href="webjars/bootstrap/3.2.0/css/bootstrap.min.css" />
+
+<script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body id="login-page-full" class="theme-whbl">
+    <div id="login-full-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="login-box">
+                        <div id="login-box-holder">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <header id="login-header">
+                                        <div id="login-logo">
+                                            <img src="img/logo.png" alt="" />
+                                        </div>
+                                    </header>
+                                    <div id="login-box-inner">
+                                        <form role="form" name="form" th:action="@{/login}" action="/login" method="POST">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                <input class="form-control" type="text" placeholder="Email address" name="username" />
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                                <input type="password" class="form-control" placeholder="Password" name="password" />
+                                            </div>
+                                            <!--<div id="remember-me-wrapper">
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <div class="checkbox-nice">
+                                                            <input type="checkbox" id="remember-me" checked="checked">
+                                                            <label for="remember-me">
+                                                                Remember me
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <a href="forgot-password-full.html" id="login-forget-link" class="col-xs-6">
+                                                        Forgot password?
+                                                    </a>
+                                                </div>
+                                            </div>-->
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <button type="submit" class="btn btn-success col-xs-12">Login</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <p class="social-text">Or login with</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-6">
+                                                    <a class="btn btn-primary col-xs-12 btn-facebook" href="login/facebook">
+                                                        <i class="fa fa-facebook"></i> facebook
+                                                    </a>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6">
+                                                    <a class="btn btn-primary col-xs-12 btn-github" href="login/github">
+                                                        <i class="fa fa-google-plus"></i> Github
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="login-box-footer">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    Do not have an account?
+                                    <a href="registration-full.html">
+                                        Register now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

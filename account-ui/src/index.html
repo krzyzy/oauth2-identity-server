@@ -1,0 +1,30 @@
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300" rel="stylesheet" type="text/css">
+
+    <title><%= webpackConfig.metadata.title %></title>
+
+    <% if (webpackConfig.htmlElements.headTags) { %>
+    <!-- Configured Head Tags  -->
+    <%= webpackConfig.htmlElements.headTags %>
+    <% } %>
+
+</head>
+
+<body class="theme-whbl  pace-done">
+
+<app>
+    Loading...
+</app>
+
+<% if (webpackConfig.metadata.isDevServer && webpackConfig.metadata.HMR !== true) { %>
+<!-- Webpack Dev Server reload -->
+<script src="/webpack-dev-server.js"></script>
+<% } %>
+
+
+</body>
+</html>

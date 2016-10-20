@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/oauth2-identity-server
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 9000
+  context-path: /account
+ldap:
+  domain: accuratus-software.pl
+  url: ldap://192.168.15.70:389/
+security:
+  user:
+    name: bar
+    password: barsecret
+  oauth2:
+    client:
+      client-id: foo2
+      client-secret: foosecret2
+      scope: read,write
+      auto-approve-scopes: '.*'
+facebook:
+  client:
+    clientId: 424263304410583
+    clientSecret: 899eeef5ad68e7d473da6436919febdf
+    accessTokenUri: https://graph.facebook.com/oauth/access_token
+    userAuthorizationUri: https://www.facebook.com/dialog/oauth
+    tokenName: oauth_token
+    authenticationScheme: query
+    clientAuthenticationScheme: form
+    scope: email
+  resource:
+    userInfoUri: https://graph.facebook.com/me?fields=name,email,username
+github:
+  client:
+    clientId: bed8f259d58fc7db2606
+    clientSecret: 942ce8c2b46746e0bbb319a1c2ffc2c3ce77eff9
+    accessTokenUri: https://github.com/login/oauth/access_token
+    userAuthorizationUri: https://github.com/login/oauth/authorize
+    clientAuthenticationScheme: form
+    scope: user:email
+  resource:
+    userInfoUri: https://api.github.com/user
+logging:
+  level:
+    org.springframework.security: DEBUG
