@@ -1,5 +1,6 @@
 package com.solidify.oauth2;
 
+import com.solidify.oauth2.security.LocalAuthenticationProvider;
 import com.solidify.oauth2.social.*;
 import org.springframework.aop.framework.Advised;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AnonymousAuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
@@ -65,6 +67,9 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private OAuth2ClientContext oauth2ClientContext;
 
+    @Autowired
+    private LocalAuthenticationProvider authenticationProvider;
+
     public int getOrder() {
         return this.order;
     }
@@ -84,6 +89,7 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .permitAll()
                 .and();
+        http.authenticationProvider(authenticationProvider);
 
         ResourceServerSecurityConfigurer resources = new ResourceServerSecurityConfigurer();
         resources.stateless(false);
@@ -109,10 +115,6 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
         }
 
         http
-                .authenticationProvider(new AnonymousAuthenticationProvider("default"))
-                    .exceptionHandling()
-                    .accessDeniedHandler(resources.getAccessDeniedHandler())
-                    .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                     .invalidSessionUrl("/login")

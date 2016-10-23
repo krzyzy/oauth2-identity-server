@@ -12,9 +12,6 @@ ldap:
   domain: accuratus-software.pl
   url: ldap://192.168.15.70:389/
 security:
-  user:
-    name: bar
-    password: barsecret
   oauth2:
     client:
       client-id: foo2
