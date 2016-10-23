@@ -19,8 +19,8 @@ public class LocalAuthenticationProvider implements AuthenticationProvider {
 
     private static final Set<Class> SUPPORTED_AUTHORISATIONS = new HashSet<Class>(singletonList(UsernamePasswordAuthenticationToken.class));
 
-    private static final String TEST_USER = "bar";
-    private static final String TEST_PASSWORD = "barsecret";
+    protected static final String TEST_USER = "bar";
+    protected static final String TEST_PASSWORD = "barsecret";
 
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String userName = authentication.getName();
