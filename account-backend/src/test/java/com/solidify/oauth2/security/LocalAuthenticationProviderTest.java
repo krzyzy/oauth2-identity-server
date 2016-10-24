@@ -6,6 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -13,7 +14,9 @@ import static org.mockito.Mockito.when;
 
 public class LocalAuthenticationProviderTest {
 
-    AuthenticationProvider provider = new LocalAuthenticationProvider();
+    UserRepository userRepository = mock(UserRepository.class);
+    PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+    AuthenticationProvider provider = new LocalAuthenticationProvider(userRepository, passwordEncoder);
 
     @Test(expected = BadCredentialsException.class)
     public void shouldFailToAuthenticateForInvalidUserName() {
@@ -46,15 +49,23 @@ public class LocalAuthenticationProviderTest {
     }
 
     @Test
-    public void shouldAuthenticateuser() {
+    public void shouldAuthenticateUser() {
         // given
-        String userName = LocalAuthenticationProvider.TEST_USER;
-        String invalidPassword = LocalAuthenticationProvider.TEST_PASSWORD;
+        String userName = "bar";
+        String password = "barsecret";
 
         Authentication input = mock(Authentication.class);
 
         when(input.getName()).thenReturn(userName);
-        when(input.getCredentials()).thenReturn(invalidPassword);
+        when(input.getCredentials()).thenReturn(password);
+
+        User user = new User();
+        user.setPassword(password);
+        user.setEmail(userName);
+        user.setEnabled(Boolean.TRUE);
+
+        when(userRepository.findByEmail(userName)).thenReturn(user);
+        when(passwordEncoder.matches(password, user.getPassword())).thenReturn(Boolean.TRUE);
 
         // when
         Authentication authentication = provider.authenticate(input);
@@ -62,6 +73,30 @@ public class LocalAuthenticationProviderTest {
         // then
         assertNotNull(authentication);
     }
+
+    @Test(expected = BadCredentialsException.class)
+    public void shouldNotAuthenticateDisabledUser() {
+        // given
+        String userName = "bar";
+        String password = "barsecret";
+
+        Authentication input = mock(Authentication.class);
+
+        when(input.getName()).thenReturn(userName);
+        when(input.getCredentials()).thenReturn(password);
+
+        User user = new User();
+        user.setPassword(password);
+        user.setEmail(userName);
+        user.setEnabled(Boolean.FALSE);
+
+        when(userRepository.findByEmail(userName)).thenReturn(user);
+        when(passwordEncoder.matches(password, user.getPassword())).thenReturn(Boolean.TRUE);
+
+        // when
+        provider.authenticate(input);
+    }
+
 
     @Test
     public void shouldSupportLoginFormAuthentication() {

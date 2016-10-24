@@ -32,7 +32,7 @@ public class IdentityServer extends WebMvcConfigurerAdapter {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/app/**")
                 .setCacheControl(CacheControl.noCache())
-                .addResourceLocations("file:///media/tomasz/dev/sources/solidify-account/account-ui/dist/app/");
+                .addResourceLocations("file:///home/kamil/workspace/oauth2-identity-server/account-ui/dist/app/");
 	}
 
 }

@@ -6,7 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -14,23 +14,31 @@ import java.util.Set;
 
 import static java.util.Collections.singletonList;
 
-@Component
 public class LocalAuthenticationProvider implements AuthenticationProvider {
 
     private static final Set<Class> SUPPORTED_AUTHORISATIONS = new HashSet<Class>(singletonList(UsernamePasswordAuthenticationToken.class));
 
-    protected static final String TEST_USER = "bar";
-    protected static final String TEST_PASSWORD = "barsecret";
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public LocalAuthenticationProvider(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String userName = authentication.getName();
         String password = authentication.getCredentials().toString();
-
-        if (TEST_USER.equals(userName) && TEST_PASSWORD.equals(password)) {
-            return new UsernamePasswordAuthenticationToken(userName, password, Collections.<GrantedAuthority>emptyList());
+        User user = userRepository.findByEmail(userName);
+        if (user == null || !isPasswordCorrect(password, user) || !user.getEnabled()) {
+            throw new BadCredentialsException(String.format("Failed to authenticate user '%s'", userName));
         }
 
-        throw new BadCredentialsException(String.format("Failed to authenticate user '%s'", userName));
+        return new UsernamePasswordAuthenticationToken(userName, password, Collections.<GrantedAuthority>emptyList());
+    }
+
+    private boolean isPasswordCorrect(String password, User user) {
+        return passwordEncoder.matches(password, user.getPassword());
     }
 
     public boolean supports(Class<?> aClass) {
