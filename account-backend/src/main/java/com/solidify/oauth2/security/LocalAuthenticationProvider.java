@@ -32,7 +32,10 @@ public class LocalAuthenticationProvider implements AuthenticationProvider {
         User user = userRepository.findByEmail(userName);
         validateUser(password, user);
 
-        return new UsernamePasswordAuthenticationToken(userName, password, Collections.<GrantedAuthority>emptyList());
+        return new UsernamePasswordAuthenticationToken(
+                user.getEmail(),
+                authentication.getCredentials(),
+                Collections.<GrantedAuthority>emptyList());
     }
 
     private void validateUser(String password, User user) {

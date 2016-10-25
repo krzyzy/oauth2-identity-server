@@ -14,12 +14,14 @@
                 <constraints checkConstraint="true"/>
             </column>
             <column name="password" type="character varying(255)"/>
+            <column name="first_name" type="character varying(255)"/>
+            <column name="last_name" type="character varying(255)"/>
             <column name="enabled" type="boolean" defaultValue="false"/>
         </createTable>
         <!-- For tests (bar, barsecret):
          INSERT INTO public.users(
-            id, email, password, enabled)
-    VALUES (1, 'bar', 'ef69b5e15dc9473c46678cd127afc35bb353d8aec5d5f9590edb7bd3653590b356888c2abd9f0936', true);
+            id, email, password, enabled, first_name,last_name )
+    VALUES (1, 'bar', 'ef69b5e15dc9473c46678cd127afc35bb353d8aec5d5f9590edb7bd3653590b356888c2abd9f0936', true, 'bar', 'secret');
 
          -->
     </changeSet>
