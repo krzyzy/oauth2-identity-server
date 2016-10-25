@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/*
+account-backend/target
+account-ui/target
+account-backend/account-backend.iml
+account-parent.iml
+account-ui/account-ui.iml
+account-ui/dist/
+account-ui/etc/
+account-ui/node/
+account-ui/node_modules/
+*.log
