@@ -30,11 +30,18 @@ public class LocalAuthenticationProvider implements AuthenticationProvider {
         String userName = authentication.getName();
         String password = authentication.getCredentials().toString();
         User user = userRepository.findByEmail(userName);
-        if (user == null || !isPasswordCorrect(password, user) || !user.getEnabled()) {
-            throw new BadCredentialsException(String.format("Failed to authenticate user '%s'", userName));
-        }
+        validateUser(password, user);
 
         return new UsernamePasswordAuthenticationToken(userName, password, Collections.<GrantedAuthority>emptyList());
+    }
+
+    private void validateUser(String password, User user) {
+        if (user == null || !isPasswordCorrect(password, user)) {
+            throw new BadCredentialsException("Incorrect user or password");
+        }
+        if (!user.getEnabled()) {
+            throw new BadCredentialsException("Please activate your account");
+        }
     }
 
     private boolean isPasswordCorrect(String password, User user) {
