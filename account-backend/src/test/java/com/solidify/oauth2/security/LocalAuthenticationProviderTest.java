@@ -64,7 +64,7 @@ public class LocalAuthenticationProviderTest {
         user.setEmail(userName);
         user.setEnabled(Boolean.TRUE);
 
-        when(userRepository.findByEmail(userName)).thenReturn(user);
+        when(userRepository.findByEmailAndEnabled(userName, Boolean.TRUE)).thenReturn(user);
         when(passwordEncoder.matches(password, user.getPassword())).thenReturn(Boolean.TRUE);
 
         // when
@@ -90,7 +90,7 @@ public class LocalAuthenticationProviderTest {
         user.setEmail(userName);
         user.setEnabled(Boolean.FALSE);
 
-        when(userRepository.findByEmail(userName)).thenReturn(user);
+        when(userRepository.findByEmailAndEnabled(userName, Boolean.TRUE)).thenReturn(user);
         when(passwordEncoder.matches(password, user.getPassword())).thenReturn(Boolean.TRUE);
 
         // when

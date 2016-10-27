@@ -29,7 +29,7 @@ public class LocalAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String userName = authentication.getName();
         String password = authentication.getCredentials().toString();
-        User user = userRepository.findByEmail(userName);
+        User user = userRepository.findByEmailAndEnabled(userName, Boolean.TRUE);
         validateUser(password, user);
 
         return new UsernamePasswordAuthenticationToken(
@@ -41,9 +41,6 @@ public class LocalAuthenticationProvider implements AuthenticationProvider {
     private void validateUser(String password, User user) {
         if (user == null || !isPasswordCorrect(password, user)) {
             throw new BadCredentialsException("Incorrect user or password");
-        }
-        if (!user.getEnabled()) {
-            throw new BadCredentialsException("Please activate your account");
         }
     }
 
