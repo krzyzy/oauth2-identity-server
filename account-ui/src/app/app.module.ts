@@ -3,11 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, XHRBackend } from '@angular/http';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+
 import {
-  AppComponent,
-  DashboardComponent,
-  MaxStringLength,
-  routing
+    AppComponent,
+    DashboardComponent,
+    ProfileComponent,
+    MaxStringLength,
+    routing
 } from './';
 
 @NgModule({
@@ -21,6 +23,7 @@ import {
     declarations: [
         AppComponent,
         DashboardComponent,
+        ProfileComponent,
         MaxStringLength,
     ],
     providers: [

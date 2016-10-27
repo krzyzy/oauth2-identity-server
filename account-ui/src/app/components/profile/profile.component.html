@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="#/user/profile">User</a></li>
+            <li class="active"><span>Profile</span></li>
+        </ol>
+
+        <h1>{{userData.lastName}} {{userData.firstName}}</h1>
+    </div>
+</div>
+<div class="row" id="user-profile">
+    <div class="col-lg-3">
+        <div class="main-box clearfix">
+            <div class="main-box-body clearfix">
+                <img src="img/samples/scarlet-159.png" alt="avatar" title="Avatar"
+                     class="profile-img img-responsive center-block">
+                <a href="#/users/edit/" class="btn btn-info">Edit Profile</a>
+                <a href="#/users/change_password/" class="pull-right">Change Password</a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-lg-9">
+        <div class="main-box clearfix">
+            <div class="col-lg-4">Email</div>
+            <div class="col-lg-8">{{userData.email}}</div>
+            <div class="col-lg-4">First name</div>
+            <div class="col-lg-8">{{userData.firstName}}</div>
+            <div class="col-lg-4">Last name</div>
+            <div class="col-lg-8">{{userData.lastName}}</div>
+            <div class="col-lg-4">Enabled</div>
+            <div class="col-lg-8">{{userData.enabled}}</div>
+        </div>
+    </div>
+</div>
