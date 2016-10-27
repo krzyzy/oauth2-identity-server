@@ -5,18 +5,17 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class LocalAuthenticationProvider implements AuthenticationProvider {
 
-    private static final Set<Class> SUPPORTED_AUTHORISATIONS = new HashSet<Class>(singletonList(UsernamePasswordAuthenticationToken.class));
+    private static final Set<Class> SUPPORTED_AUTHORISATIONS = new HashSet<>(singletonList(UsernamePasswordAuthenticationToken.class));
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -35,7 +34,7 @@ public class LocalAuthenticationProvider implements AuthenticationProvider {
         return new UsernamePasswordAuthenticationToken(
                 user.getEmail(),
                 authentication.getCredentials(),
-                Collections.<GrantedAuthority>emptyList());
+                emptyList());
     }
 
     private void validateUser(String password, User user) {
