@@ -8,18 +8,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AnonymousAuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
-import org.springframework.security.oauth2.config.annotation.web.configuration.*;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerEndpointsConfiguration;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHandlerMapping;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
@@ -30,8 +28,6 @@ import org.springframework.social.facebook.connect.FacebookServiceProvider;
 import org.springframework.social.github.connect.GitHubServiceProvider;
 import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.CompositeFilter;
 
 import javax.servlet.Filter;
@@ -42,7 +38,6 @@ import java.util.*;
  * Created by tomasz on 05.10.16.
  */
 @Configuration
-@RestController
 public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
 
     private int order = 3;
@@ -116,23 +111,23 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                    .invalidSessionUrl("/login")
-                    .and()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .invalidSessionUrl("/login")
+                .and()
                 .authorizeRequests()
-                    .antMatchers("/img*//**", "/webjars*//**").permitAll()
-                    .antMatchers("/oauth*//**").fullyAuthenticated()
-                    .antMatchers("/app*//**").fullyAuthenticated()
-                    .anyRequest().fullyAuthenticated()
-                    .and()
+                .antMatchers("/img*//**", "/webjars*//**").permitAll()
+                .antMatchers("/oauth*//**").fullyAuthenticated()
+                .antMatchers("/app*//**").fullyAuthenticated()
+                .anyRequest().fullyAuthenticated()
+                .and()
                 .httpBasic()
-                    .and()
+                .and()
                 .logout()
-                    .logoutSuccessUrl("/")
-                    .permitAll()
-                    .and()
+                .logoutSuccessUrl("/")
+                .permitAll()
+                .and()
                 .csrf()
-                    .disable();
+                .disable();
 
         http.apply(resources);
 
@@ -152,15 +147,15 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
     }
 
     private ResourceServerTokenServices resolveTokenServices() {
-        if(this.tokenServices != null && this.tokenServices.size() != 0) {
-            if(this.tokenServices.size() == 1) {
+        if (this.tokenServices != null && this.tokenServices.size() != 0) {
+            if (this.tokenServices.size() == 1) {
                 return this.tokenServices.values().iterator().next();
             } else {
-                if(this.tokenServices.size() == 2) {
+                if (this.tokenServices.size() == 2) {
                     Iterator iter = this.tokenServices.values().iterator();
-                    ResourceServerTokenServices one = (ResourceServerTokenServices)iter.next();
-                    ResourceServerTokenServices two = (ResourceServerTokenServices)iter.next();
-                    if(this.elementsEqual(one, two)) {
+                    ResourceServerTokenServices one = (ResourceServerTokenServices) iter.next();
+                    ResourceServerTokenServices two = (ResourceServerTokenServices) iter.next();
+                    if (this.elementsEqual(one, two)) {
                         return one;
                     }
                 }
@@ -173,7 +168,7 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
     }
 
     private boolean elementsEqual(Object one, Object two) {
-        if(one == two) {
+        if (one == two) {
             return true;
         } else {
             Object targetOne = this.findTarget(one);
@@ -185,9 +180,9 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
     private Object findTarget(Object item) {
         Object current = item;
 
-        while(current instanceof Advised) {
+        while (current instanceof Advised) {
             try {
-                current = ((Advised)current).getTargetSource().getTarget();
+                current = ((Advised) current).getTargetSource().getTarget();
             } catch (Exception var4) {
                 ReflectionUtils.rethrowRuntimeException(var4);
             }
@@ -209,30 +204,24 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
 
             String path;
             do {
-                if(!var3.hasNext()) {
+                if (!var3.hasNext()) {
                     return true;
                 }
 
-                path = (String)var3.next();
-            } while(!requestPath.startsWith(this.mapping.getPath(path)));
+                path = (String) var3.next();
+            } while (!requestPath.startsWith(this.mapping.getPath(path)));
 
             return false;
         }
 
         private String getRequestPath(HttpServletRequest request) {
             String url = request.getServletPath();
-            if(request.getPathInfo() != null) {
+            if (request.getPathInfo() != null) {
                 url = url + request.getPathInfo();
             }
 
             return url;
         }
-    }
-
-
-    @RequestMapping("/api/user")
-    public Object user() {
-        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 

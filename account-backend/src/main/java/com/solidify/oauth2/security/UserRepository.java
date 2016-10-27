@@ -6,4 +6,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByEmailAndEnabled(String email, Boolean enabled);
 
+    User findByEmail(String email);
 }

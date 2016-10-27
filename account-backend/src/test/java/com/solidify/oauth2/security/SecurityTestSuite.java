@@ -5,7 +5,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        LocalAuthenticationProviderTest.class
+        LocalAuthenticationProviderTest.class,
+        UserTransformerTest.class,
+        UserControllerTest.class
 })
 public class SecurityTestSuite {
 }
