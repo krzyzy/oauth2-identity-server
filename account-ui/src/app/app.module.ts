@@ -8,6 +8,7 @@ import {
     AppComponent,
     DashboardComponent,
     ProfileComponent,
+    ChangePasswordComponent,
     MaxStringLength,
     routing
 } from './';
@@ -24,6 +25,7 @@ import {
         AppComponent,
         DashboardComponent,
         ProfileComponent,
+        ChangePasswordComponent,
         MaxStringLength,
     ],
     providers: [

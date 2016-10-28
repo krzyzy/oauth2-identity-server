@@ -1,6 +1,8 @@
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent }  from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ChangePasswordComponent } from './components/profile/change.password'
+
 export const appRoutes: Routes = [
     {
         path: '',
@@ -10,6 +12,10 @@ export const appRoutes: Routes = [
     {
         path: 'user/profile',
         component: ProfileComponent
+    },
+    {
+        path:'user/change_password',
+        component: ChangePasswordComponent
     },
     {
         path: 'dashboard',
