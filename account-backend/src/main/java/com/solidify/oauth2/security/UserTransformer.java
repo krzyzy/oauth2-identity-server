@@ -1,5 +1,6 @@
 package com.solidify.oauth2.security;
 
+import com.solidify.oauth2.security.resource.UserDto;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Function;

@@ -1,6 +1,9 @@
 package com.solidify.oauth2.security;
 
-import org.junit.Assert;
+import com.solidify.oauth2.security.resource.UserChangePasswordForm;
+import com.solidify.oauth2.security.resource.UserDto;
+import com.solidify.oauth2.web.ResponseMessage;
+import com.solidify.oauth2.web.ResponseStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -8,19 +11,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
     UserRepository repository = mock(UserRepository.class);
     UserTransformer toDto = mock(UserTransformer.class);
-
-    UserController controller = new UserController(repository, toDto);
+    PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+    UserController controller = new UserController(repository, toDto, passwordEncoder);
 
     @Test
     public void shouldReturnLocalUser() {
@@ -41,6 +43,85 @@ public class UserControllerTest {
         verify(repository).findByEmail(userName);
     }
 
+    @Test
+    public void shouldRejectEmptyUpdatePasswordForm() {
+        // given
+        UserChangePasswordForm input = new UserChangePasswordForm();
+        // when
+        ResponseMessage message = controller.changeUserPassword(input);
+
+        // then
+        assertEquals(ResponseStatus.ERROR, message.getStatus());
+        assertNotNull(message.getMessage());
+    }
+
+    @Test
+    public void shouldRejectInvalidUpdatePasswordForm() {
+        // given
+        UserChangePasswordForm input = new UserChangePasswordForm();
+        input.setPassword("1");
+        input.setConfirmPassword("2");
+
+        // when
+        ResponseMessage message = controller.changeUserPassword(input);
+
+        // then
+        assertEquals(ResponseStatus.ERROR, message.getStatus());
+        assertNotNull(message.getMessage());
+    }
+
+    @Test
+    public void shouldUpdateUserPassword() {
+        // given
+        UserChangePasswordForm input = new UserChangePasswordForm();
+        input.setPassword("bartest");
+        input.setConfirmPassword("bartest");
+
+        String userLogin = "bar";
+        setPrincipals(userLogin);
+
+        User model = new User();
+        when(repository.findByEmail(userLogin)).thenReturn(model);
+
+        when(passwordEncoder.encode(any())).thenReturn("saltyPassword");
+
+        // when
+        ResponseMessage message = controller.changeUserPassword(input);
+
+        // then
+        assertEquals(ResponseStatus.OK, message.getStatus());
+        assertNotNull(message.getMessage());
+
+        verify(repository).save(model);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenUserIsNotPErsistedInLocalDatabase() {
+        // given
+        UserChangePasswordForm input = new UserChangePasswordForm();
+        input.setPassword("bartest");
+        input.setConfirmPassword("bartest");
+
+        String userLogin = "bar";
+        setPrincipals(userLogin);
+
+        when(repository.findByEmail(userLogin)).thenReturn(null);
+
+        when(passwordEncoder.encode(any())).thenReturn("saltyPassword");
+
+        // when
+        try {
+            controller.changeUserPassword(input);
+            fail("Should throw security exception");
+        } catch (Exception ex) {
+            // ok
+        }
+        // then
+        verify(repository, never()).save(any(User.class));
+        verify(passwordEncoder, never()).encode(anyString());
+    }
+
+
     private void setPrincipals(Object object) {
         Authentication authentication = mock(Authentication.class);
         when(authentication.getPrincipal()).thenReturn(object);
@@ -48,4 +129,6 @@ public class UserControllerTest {
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
     }
+
+
 }

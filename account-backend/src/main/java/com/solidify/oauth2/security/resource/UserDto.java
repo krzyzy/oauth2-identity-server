@@ -1,4 +1,4 @@
-package com.solidify.oauth2.security;
+package com.solidify.oauth2.security.resource;
 
 public class UserDto {
 
