@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
@@ -47,7 +48,7 @@ public class UserController {
         return userPrincipals;
     }
 
-    @RequestMapping(value = "/api/user/password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/api/user/password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage changeUserPassword(@RequestBody UserChangePasswordForm form) {
         // TODO: wrap in exception handler
         if (ofNullable(form.getPassword()).map(String::trim).orElse("").isEmpty()) {

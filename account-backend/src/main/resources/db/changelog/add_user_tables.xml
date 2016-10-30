@@ -21,7 +21,7 @@
         <!-- For tests (bar, barsecret):
          INSERT INTO public.users(
             id, email, password, enabled, first_name,last_name )
-    VALUES (1, 'bar', 'ef69b5e15dc9473c46678cd127afc35bb353d8aec5d5f9590edb7bd3653590b356888c2abd9f0936', true, 'bar', 'secret');
+    VALUES (1, 'bar@gmail.com', 'ef69b5e15dc9473c46678cd127afc35bb353d8aec5d5f9590edb7bd3653590b356888c2abd9f0936', true, 'bar', 'secret');
 
          -->
     </changeSet>

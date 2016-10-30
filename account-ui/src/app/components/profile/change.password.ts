@@ -1,9 +1,6 @@
 import {Component} from "@angular/core";
-
-export interface ChangePasswordForm {
-    password: string; // required, value must be equal to confirm password.
-    confirmPassword: string; // required, value must be equal to password.
-}
+import {Http} from "@angular/http";
+import {Router} from '@angular/router'
 
 @Component({
     selector: 'user-change-password',
@@ -11,13 +8,38 @@ export interface ChangePasswordForm {
 })
 export class ChangePasswordComponent {
 
-    constructor() {
+    constructor(private http: Http, private router: Router) {
         this.form = {
-            password: ''
+            password: "",
+            confirmPassword: ""
         };
     }
 
-    save(model: ChangePasswordForm, isValid: boolean) {
-        console.log(model);
+    save($event) {
+        $event.preventDefault();
+        if (!this.form .password || !this.form .confirmPassword) {
+            console.warn("Password is required");
+            return;
+        }
+        if (this.form.password !== this.form .confirmPassword) {
+            console.warn("Passwords do not match");
+            return;
+        }
+        console.log(this.form);
+        this.http.post('/account/api/user/password', this.form )
+            .map(res => res.json())
+            .subscribe(
+                data => this.onPasswordChange(data),
+                err => this.logError(err)
+            );
+    }
+
+    onPasswordChange(data) {
+        console.info("Password has been changed" + data)
+        this.router.navigate(['/user/profile'])
+    }
+
+    logError(err) {
+        console.error('There was an error: ' + err);
     }
 }
