@@ -9,6 +9,7 @@ export class DashboardComponent implements OnInit {
 
     constructor(private http: Http) {
         this.userData = {};
+        this.clients = [];
     }
 
     ngOnInit() {
@@ -16,6 +17,12 @@ export class DashboardComponent implements OnInit {
             .map(res => res.json())
             .subscribe(
                 data => this.userData = data,
+                err => this.logError(err)
+            );
+        this.http.get('/account/api/clients')
+            .map(res => res.json())
+            .subscribe(
+                data => this.clients = data,
                 err => this.logError(err)
             );
     }

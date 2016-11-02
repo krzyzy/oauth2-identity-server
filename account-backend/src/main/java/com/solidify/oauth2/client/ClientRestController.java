@@ -1,12 +1,13 @@
 package com.solidify.oauth2.client;
 
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 
 /**
  * Created by tomasz on 16.10.16.
@@ -22,7 +23,10 @@ public class ClientRestController {
     }
 
     @RequestMapping("/api/clients")
-    public List<Client> getClient(){
-        return new ArrayList<Client>(Lists.newArrayList(clientRepository.findAll()));
+    public List<Client> getClient() {
+        return stream(
+                clientRepository.findAll().spliterator(),
+                false)
+                .collect(toList());
     }
 }
