@@ -1,6 +1,7 @@
 package com.solidify.oauth2.security;
 
 import com.solidify.oauth2.security.resource.UserChangePasswordForm;
+import com.solidify.oauth2.security.resource.UserProfileForm;
 import com.solidify.oauth2.web.ResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,10 +64,20 @@ public class UserController {
         user.setPassword(passwordEncoder.encode(form.getPassword()));
 
         repository.save(user);
-        LOGGER.info("Changes password for user {}", user.getEmail());
+        LOGGER.info("Changed password for user {}", user.getEmail());
         return ResponseMessage.createOk("Password has been updated");
     }
 
+    @RequestMapping(value = "/api/user/profile", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseMessage changeUserProfile(@RequestBody UserProfileForm form) {
+
+        User user = getUser().orElseThrow(() -> new SecurityException("User could not be found in local resources"));
+        user.setFirstName(form.getFirstName());
+        user.setLastName(form.getLastName());
+        repository.save(user);
+        LOGGER.info("Updated profile for user {}", user.getEmail());
+        return ResponseMessage.createOk("Profile has been updated");
+    }
     private Optional<User> getUser() {
         Object userPrincipals = getUserPrincipals();
         if (userPrincipals instanceof String) {

@@ -9,7 +9,7 @@ import {ChangePasswordForm} from "./change.password.form";
 })
 export class ChangePasswordComponent implements OnInit {
 
-
+    form = {};
     constructor(private http: Http, private router: Router) {
     }
 
@@ -19,11 +19,6 @@ export class ChangePasswordComponent implements OnInit {
 
     save($event) {
         $event.preventDefault();
-
-        if (this.form.password !== this.form.confirmPassword) {
-            console.warn("Passwords do not match");
-            return;
-        }
         this.http.post('/account/api/user/password', this.form)
             .map(res => res.json())
             .subscribe(

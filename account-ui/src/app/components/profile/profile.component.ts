@@ -7,8 +7,9 @@ import {Http} from "@angular/http";
 })
 export class ProfileComponent implements OnInit {
 
+    userData = {};
+
     constructor(private http: Http) {
-        this.userData = {};
     }
 
     ngOnInit() {

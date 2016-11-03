@@ -5,5 +5,5 @@ export * from './app.service';
 export * from './components/dashboard/dashboard.component';
 export * from './components/profile/profile.component';
 export * from './components/profile/change.password';
-
+export * from './components/profile/change.profile';
 export * from "./pipes/maxstringlength"

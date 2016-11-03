@@ -9,6 +9,7 @@ import {
     DashboardComponent,
     ProfileComponent,
     ChangePasswordComponent,
+    ProfileFormComponent,
     MaxStringLength,
     routing
 } from './';
@@ -26,6 +27,7 @@ import {
         DashboardComponent,
         ProfileComponent,
         ChangePasswordComponent,
+        ProfileFormComponent,
         MaxStringLength,
     ],
     providers: [
