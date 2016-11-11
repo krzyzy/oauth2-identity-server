@@ -23,10 +23,17 @@ public class ClientRestController {
     }
 
     @RequestMapping("/api/clients")
-    public List<Client> getClient() {
+    public List<ClientDto> getAllClients() {
         return stream(
                 clientRepository.findAll().spliterator(),
                 false)
+                .map(this::toDto)
                 .collect(toList());
+    }
+
+    protected ClientDto toDto(Client model) {
+        ClientDto dto = new ClientDto();
+        dto.setId(model.getClientId());
+        return dto;
     }
 }

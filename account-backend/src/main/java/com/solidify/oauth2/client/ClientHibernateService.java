@@ -1,7 +1,5 @@
 package com.solidify.oauth2.client;
 
-import com.solidify.oauth2.client.Client;
-import com.solidify.oauth2.client.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -29,17 +27,17 @@ public class ClientHibernateService implements ClientDetailsService {
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         Client one = clientRepository.findOne(clientId);
 
-        BaseClientDetails baseClientDetails = new BaseClientDetails();
-        baseClientDetails.setClientId(clientId);
-        baseClientDetails.setClientSecret(one.getClientSecret());
-        baseClientDetails.setAuthorizedGrantTypes(one.getAuthorizedGrantTypes());
-        baseClientDetails.setRegisteredRedirectUri(one.getRegisteredRedirectUri());
-        baseClientDetails.setScope(one.getScope());
-        baseClientDetails.setAutoApproveScopes(one.getAutoApproveScopes());
+        BaseClientDetails details = new BaseClientDetails();
+        details.setClientId(clientId);
+        details.setClientSecret(one.getClientSecret());
+        details.setAuthorizedGrantTypes(one.getAuthorizedGrantTypes());
+        details.setRegisteredRedirectUri(one.getRegisteredRedirectUri());
+        details.setScope(one.getScope());
+        details.setAutoApproveScopes(one.getAutoApproveScopes());
 
-        baseClientDetails.setAccessTokenValiditySeconds(one.getAccessTokenValiditySeconds());
-        baseClientDetails.setAdditionalInformation(one.getAdditionalInformation());
-        baseClientDetails.setAuthorities(one.getAuthorities());
-        return baseClientDetails;
+        details.setAccessTokenValiditySeconds(one.getAccessTokenValiditySeconds());
+        details.setAdditionalInformation(one.getAdditionalInformation());
+        details.setAuthorities(one.getAuthorities());
+        return details;
     }
 }

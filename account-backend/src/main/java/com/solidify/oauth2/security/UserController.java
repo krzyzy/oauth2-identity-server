@@ -6,17 +6,12 @@ import com.solidify.oauth2.web.ResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
-import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 @RestController
@@ -51,16 +46,11 @@ public class UserController {
 
     @RequestMapping(value = "/api/user/password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage changeUserPassword(@RequestBody UserChangePasswordForm form) {
-        // TODO: wrap in exception handler
-        if (ofNullable(form.getPassword()).map(String::trim).orElse("").isEmpty()) {
-            return ResponseMessage.createError("New password is required");
-        }
-        if (!form.getPassword().equals(form.getConfirmPassword())) {
-            return ResponseMessage.createError("Passwords do not match");
-        }
+        validatePasswordChangeForm(form);
+
         LOGGER.info("Requested user password change");
 
-        User user = getUser().orElseThrow(() -> new SecurityException("User could not be found in local resources"));
+        User user = getUser();
         user.setPassword(passwordEncoder.encode(form.getPassword()));
 
         repository.save(user);
@@ -68,26 +58,45 @@ public class UserController {
         return ResponseMessage.createOk("Password has been updated");
     }
 
+    private void validatePasswordChangeForm(@RequestBody UserChangePasswordForm form) {
+        if (ofNullable(form.getPassword()).map(String::trim).orElse("").isEmpty()) {
+            throw new IllegalArgumentException("New password is required");
+        }
+        if (!form.getPassword().equals(form.getConfirmPassword())) {
+            throw new IllegalArgumentException("Passwords do not match");
+        }
+    }
+
     @RequestMapping(value = "/api/user/profile", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage changeUserProfile(@RequestBody UserProfileForm form) {
 
-        User user = getUser().orElseThrow(() -> new SecurityException("User could not be found in local resources"));
+        User user = getUser();
+        LOGGER.info("Requested user profile change");
         user.setFirstName(form.getFirstName());
         user.setLastName(form.getLastName());
+
         repository.save(user);
         LOGGER.info("Updated profile for user {}", user.getEmail());
         return ResponseMessage.createOk("Profile has been updated");
     }
-    private Optional<User> getUser() {
+
+    private User getUser() {
         Object userPrincipals = getUserPrincipals();
         if (userPrincipals instanceof String) {
-            return ofNullable(repository.findByEmail(userPrincipals.toString()));
+            return ofNullable(repository.findByEmail(userPrincipals.toString())).orElseThrow(() -> new SecurityException("User could not be found in local resources"));
         }
-        return empty();
+        throw new SecurityException("User could not be found in local resources");
     }
 
     private Object getUserPrincipals() {
         return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    ResponseMessage handleException(IllegalArgumentException ex) {
+        return ResponseMessage.createError(ex.getMessage());
     }
 
 }

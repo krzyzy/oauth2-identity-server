@@ -15,32 +15,32 @@ public class Client implements ClientDetails {
     @Id
     private String id;
 
-    @Column(name="client_secret")
+    @Column(name = "client_secret")
     private String clientSecret;
 
     @ElementCollection()
-    @CollectionTable(name="auto_approve_scopes", joinColumns=@JoinColumn(name="client_id"))
-    @Column(name="scope")
+    @CollectionTable(name = "auto_approve_scopes", joinColumns = @JoinColumn(name = "client_id"))
+    @Column(name = "scope")
     private Set<String> autoApproveScopes;
 
     @ElementCollection()
-    @CollectionTable(name="resource_ids", joinColumns=@JoinColumn(name="client_id"))
-    @Column(name="resource_id")
+    @CollectionTable(name = "resource_ids", joinColumns = @JoinColumn(name = "client_id"))
+    @Column(name = "resource_id")
     private Set<String> resourceIds;
 
     @ElementCollection()
-    @CollectionTable(name="scope", joinColumns=@JoinColumn(name="client_id"))
-    @Column(name="scope")
+    @CollectionTable(name = "scope", joinColumns = @JoinColumn(name = "client_id"))
+    @Column(name = "scope")
     private Set<String> scope;
 
     @ElementCollection()
-    @CollectionTable(name="authorized_grant_types", joinColumns=@JoinColumn(name="client_id"))
-    @Column(name="grant_type")
+    @CollectionTable(name = "authorized_grant_types", joinColumns = @JoinColumn(name = "client_id"))
+    @Column(name = "grant_type")
     private Set<String> authorizedGrantTypes;
 
     @ElementCollection()
-    @CollectionTable(name="redirect_uris", joinColumns=@JoinColumn(name="client_id"))
-    @Column(name="redirect_uri")
+    @CollectionTable(name = "redirect_uris", joinColumns = @JoinColumn(name = "client_id"))
+    @Column(name = "redirect_uri")
     private Set<String> registeredRedirectUri;
 
 
@@ -93,19 +93,19 @@ public class Client implements ClientDetails {
     }
 
     public boolean isAutoApprove(String scope) {
-        if(this.autoApproveScopes == null) {
+        if (this.autoApproveScopes == null) {
             return false;
         } else {
             Iterator var2 = this.autoApproveScopes.iterator();
 
             String auto;
             do {
-                if(!var2.hasNext()) {
+                if (!var2.hasNext()) {
                     return false;
                 }
 
-                auto = (String)var2.next();
-            } while(!auto.equals("true") && !scope.matches(auto));
+                auto = (String) var2.next();
+            } while (!"true".equals(auto) && !scope.matches(auto));
 
             return true;
         }

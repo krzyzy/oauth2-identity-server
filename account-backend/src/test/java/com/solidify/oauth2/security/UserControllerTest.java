@@ -4,6 +4,7 @@ import com.solidify.oauth2.security.resource.UserChangePasswordForm;
 import com.solidify.oauth2.security.resource.UserDto;
 import com.solidify.oauth2.web.ResponseMessage;
 import com.solidify.oauth2.web.ResponseStatus;
+import org.dom4j.IllegalAddException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -43,19 +44,16 @@ public class UserControllerTest {
         verify(repository).findByEmail(userName);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void shouldRejectEmptyUpdatePasswordForm() {
         // given
         UserChangePasswordForm input = new UserChangePasswordForm();
-        // when
-        ResponseMessage message = controller.changeUserPassword(input);
 
-        // then
-        assertEquals(ResponseStatus.ERROR, message.getStatus());
-        assertNotNull(message.getMessage());
+        // when
+        controller.changeUserPassword(input);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void shouldRejectInvalidUpdatePasswordForm() {
         // given
         UserChangePasswordForm input = new UserChangePasswordForm();
@@ -63,11 +61,7 @@ public class UserControllerTest {
         input.setConfirmPassword("2");
 
         // when
-        ResponseMessage message = controller.changeUserPassword(input);
-
-        // then
-        assertEquals(ResponseStatus.ERROR, message.getStatus());
-        assertNotNull(message.getMessage());
+        controller.changeUserPassword(input);
     }
 
     @Test
@@ -130,5 +124,16 @@ public class UserControllerTest {
         SecurityContextHolder.setContext(securityContext);
     }
 
+    @Test
+    public void should_extract_exception_message_to_response() {
+        // given
+        IllegalArgumentException ex = new IllegalAddException("Required field");
 
+        // when
+        ResponseMessage response = controller.handleException(ex);
+
+        // then
+        assertNotNull(response.getMessage());
+        assertEquals(ResponseStatus.ERROR, response.getStatus());
+    }
 }
