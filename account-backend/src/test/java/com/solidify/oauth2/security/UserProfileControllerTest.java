@@ -19,11 +19,11 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserControllerTest {
+public class UserProfileControllerTest {
     UserRepository repository = mock(UserRepository.class);
     UserTransformer toDto = mock(UserTransformer.class);
     PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-    UserController controller = new UserController(repository, toDto, passwordEncoder);
+    UserProfileController controller = new UserProfileController(repository, toDto, passwordEncoder);
 
     @Test
     public void shouldReturnLocalUser() {

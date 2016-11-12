@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpModule, XHRBackend } from '@angular/http';
+import { HttpModule} from '@angular/http';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 import {
@@ -10,9 +10,11 @@ import {
     ProfileComponent,
     ChangePasswordComponent,
     ProfileFormComponent,
+    MessageComponent,
     MaxStringLength,
     routing
 } from './';
+
 
 @NgModule({
     imports: [
@@ -27,6 +29,7 @@ import {
         DashboardComponent,
         ProfileComponent,
         ChangePasswordComponent,
+        MessageComponent,
         ProfileFormComponent,
         MaxStringLength,
     ],

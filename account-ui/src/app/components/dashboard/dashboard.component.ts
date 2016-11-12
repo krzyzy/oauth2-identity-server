@@ -1,33 +1,30 @@
 import {Component, OnInit} from "@angular/core";
-import {Http} from "@angular/http";
+import {ProfileService} from "../profile/profile.service";
+import {DashboardService} from "./dashboard.service";
 
 @Component({
     selector: 'my-dashboard',
-    templateUrl: 'dashboard.component.html'
+    templateUrl: 'dashboard.component.html',
+    providers : [ProfileService, DashboardService]
 })
 export class DashboardComponent implements OnInit {
+    userData = {};
+    clients = [];
+    usersReport = {
+        userCount:'N/A'
+    };
 
-    constructor(private http: Http) {
-        this.userData = {};
-        this.clients = [];
+    constructor(private profile: ProfileService,
+                private dashboard: DashboardService) {
     }
 
     ngOnInit() {
-        this.http.get('/account/api/user')
-            .map(res => res.json())
-            .subscribe(
-                data => this.userData = data,
-                err => this.logError(err)
-            );
-        this.http.get('/account/api/clients')
-            .map(res => res.json())
-            .subscribe(
-                data => this.clients = data,
-                err => this.logError(err)
-            );
+        this.profile.getProfile()
+            .subscribe(data => this.userData = data);
+        this.dashboard.getClients()
+            .subscribe(data => this.clients = data);
+        this.dashboard.getUsersReport()
+            .subscribe( data => this.usersReport = data);
     }
 
-    logError(err) {
-        console.error('There was an error: ' + err);
-    }
 }

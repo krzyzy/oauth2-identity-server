@@ -7,7 +7,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         LocalAuthenticationProviderTest.class,
         UserTransformerTest.class,
-        UserControllerTest.class
+        UserProfileControllerTest.class
 })
 public class SecurityTestSuite {
 }

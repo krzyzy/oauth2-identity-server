@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import static java.util.Optional.ofNullable;
 
 @RestController
-public class UserController {
+public class UserProfileController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserProfileController.class);
 
     private final UserRepository repository;
     private final UserTransformer toDto;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserRepository repository, UserTransformer toDto, PasswordEncoder passwordEncoder) {
+    public UserProfileController(UserRepository repository, UserTransformer toDto, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.toDto = toDto;
         this.passwordEncoder = passwordEncoder;
