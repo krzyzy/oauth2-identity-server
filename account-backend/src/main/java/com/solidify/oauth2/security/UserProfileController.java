@@ -1,6 +1,7 @@
 package com.solidify.oauth2.security;
 
 import com.solidify.oauth2.security.resource.UserChangePasswordForm;
+import com.solidify.oauth2.security.resource.UserDto;
 import com.solidify.oauth2.security.resource.UserProfileForm;
 import com.solidify.oauth2.web.ResponseMessage;
 import org.slf4j.Logger;
@@ -12,7 +13,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 
 @RestController
 public class UserProfileController {
@@ -28,6 +33,13 @@ public class UserProfileController {
         this.repository = repository;
         this.toDto = toDto;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @RequestMapping("/api/users")
+    public List<UserDto> getUsers() {
+        return stream(repository.findAll().spliterator(), false)
+                .map(toDto)
+                .collect(toList());
     }
 
     @RequestMapping("/api/user")
@@ -83,7 +95,8 @@ public class UserProfileController {
     private User getUser() {
         Object userPrincipals = getUserPrincipals();
         if (userPrincipals instanceof String) {
-            return ofNullable(repository.findByEmail(userPrincipals.toString())).orElseThrow(() -> new SecurityException("User could not be found in local resources"));
+            return ofNullable(repository.findByEmail(userPrincipals.toString()))
+                    .orElseThrow(() -> new SecurityException("User could not be found in local resources"));
         }
         throw new SecurityException("User could not be found in local resources");
     }
