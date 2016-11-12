@@ -1,22 +1,22 @@
 import {Component, OnInit} from "@angular/core";
-import {Http} from "@angular/http";
 import {Router} from "@angular/router";
 import {ChangeProfileForm} from "./change.profile.form";
+import {ProfileService} from "./profile.service";
 
 @Component({
     selector: 'user-change-profile',
-    templateUrl: 'change.profile.html'
+    templateUrl: 'change.profile.html',
+    providers : [ProfileService]
 })
 export class ProfileFormComponent implements OnInit {
 
     form = new ChangeProfileForm('', '');
 
-    constructor(private http: Http, private router: Router) {
+    constructor(private service: ProfileService, private router: Router) {
     }
 
     ngOnInit() {
-        this.http.get('/account/api/user')
-            .map(res => res.json())
+        this.service.getProfile()
             .subscribe(
                 data => this.form = new ChangeProfileForm(data.firstName || '', data.lastName || ''),
                 err => console.error('There was an error: ' + err)
@@ -26,8 +26,7 @@ export class ProfileFormComponent implements OnInit {
     save($event) {
         $event.preventDefault();
 
-        this.http.post('/account/api/user/profile', this.form)
-            .map(res => res.json())
+        this.service.updateProfile(this.form)
             .subscribe(
                 data => this.onProfileChange(data),
                 err => this.logError(err)
