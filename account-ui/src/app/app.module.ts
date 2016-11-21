@@ -11,6 +11,7 @@ import {
     ChangePasswordComponent,
     ProfileFormComponent,
     MessageComponent,
+    UsersListComponent,
     MaxStringLength,
     routing
 } from './';
@@ -30,6 +31,7 @@ import {
         ProfileComponent,
         ChangePasswordComponent,
         MessageComponent,
+        UsersListComponent,
         ProfileFormComponent,
         MaxStringLength,
     ],
