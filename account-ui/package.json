@@ -105,7 +105,7 @@
     "typedoc": "^0.4.4",
     "typescript": "^2.0.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.2",
+    "webpack": "^1.13.3",
     "webpack-dev-server": "^1.14.1",
     "webpack-md5-hash": "^0.0.5",
     "webpack-merge": "^0.14.0",

@@ -7,6 +7,6 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
         ">
 
-    <include file="/db/changelog/2016-10-16_21:21_add_client_tables.xml"/>
+    <include file="/db/changelog/2016-10-16_21_21_add_client_tables.xml"/>
     <include file="/db/changelog/add_user_tables.xml"/>
 </databaseChangeLog>
