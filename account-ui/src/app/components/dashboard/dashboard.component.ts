@@ -21,8 +21,6 @@ export class DashboardComponent implements OnInit {
     ngOnInit() {
         this.profile.getProfile()
             .subscribe(data => this.userData = data);
-        this.dashboard.getClients()
-            .subscribe(data => this.clients = data);
         this.dashboard.getUsersReport()
             .subscribe( data => this.usersReport = data);
     }
