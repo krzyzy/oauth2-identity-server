@@ -43,3 +43,5 @@ github:
 logging:
   level:
     org.springframework.security: DEBUG
+ui:
+  location: file:///solidify/sources/oauth2-identity-server/account-ui/dist/app/

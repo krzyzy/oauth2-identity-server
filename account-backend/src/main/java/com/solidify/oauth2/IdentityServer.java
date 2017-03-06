@@ -1,5 +1,6 @@
 package com.solidify.oauth2;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class IdentityServer extends WebMvcConfigurerAdapter {
 
+	@Value("${ui.location}")
+	private String uiLocation;
+
 	public static void main(String[] args) {
 		SpringApplication.run(IdentityServer.class, args);
 	}
@@ -32,7 +36,7 @@ public class IdentityServer extends WebMvcConfigurerAdapter {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/app/**")
                 .setCacheControl(CacheControl.noCache())
-                .addResourceLocations("file:///home/kamil/workspace/oauth2-identity-server/account-ui/dist/app/");
+                .addResourceLocations(uiLocation);
 	}
 
 }
