@@ -2,7 +2,7 @@ spring:
   datasource:
     username: postgres
     password: postgres
-    url: jdbc:postgresql://infrastructure.accuratus-software.pl:5432/spreadium_storage
+    url: jdbc:postgresql://postgres:5432/storage
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 ui:
