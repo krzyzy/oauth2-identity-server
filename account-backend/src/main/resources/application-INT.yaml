@@ -1,2 +1,2 @@
 ui:
-  location: file:///solidify/sources/oauth2-identity-server/account-ui/dist/app/
+  location: file:///opt/oauth-identity-server/app/
