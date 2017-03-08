@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oauth-identity-server
+  labels:
+    app: oauth-identity-server
+    visualize: "true"
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: oauth-identity-server

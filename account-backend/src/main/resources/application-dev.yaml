@@ -1,2 +1,4 @@
+server:
+  port: 9000
 ui:
   location: file:///solidify/sources/oauth2-identity-server/account-ui/dist/app/

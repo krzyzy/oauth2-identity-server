@@ -6,7 +6,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 server:
-  port: 9000
+  port: 8080
   context-path: /account
 ldap:
   domain: accuratus-software.pl
