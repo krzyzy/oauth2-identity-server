@@ -1,7 +1,7 @@
 package com.solidify.oauth2;
 
-import com.solidify.oauth2.security.LocalAuthenticationProvider;
-import com.solidify.oauth2.security.UserRepository;
+import com.solidify.oauth2.user.local.LocalAuthenticationProvider;
+import com.solidify.oauth2.user.local.LocalUserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +16,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public LocalAuthenticationProvider localAuthenticationProvider(UserRepository userRepository, PasswordEncoder passwordEncoder){
-        return new LocalAuthenticationProvider(userRepository, passwordEncoder);
+    public LocalAuthenticationProvider localAuthenticationProvider(LocalUserRepository localUserRepository, PasswordEncoder passwordEncoder){
+        return new LocalAuthenticationProvider(localUserRepository, passwordEncoder);
     }
 }

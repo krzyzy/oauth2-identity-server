@@ -1,4 +1,4 @@
-package com.solidify.oauth2.security;
+package com.solidify.oauth2.user.local;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -6,8 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         LocalAuthenticationProviderTest.class,
-        UserTransformerTest.class,
-        UserProfileControllerTest.class
+        LocalUserProfileControllerTest.class
 })
 public class SecurityTestSuite {
 }

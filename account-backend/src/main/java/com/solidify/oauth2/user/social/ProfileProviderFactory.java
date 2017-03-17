@@ -1,4 +1,4 @@
-package com.solidify.oauth2.social;
+package com.solidify.oauth2.user.social;
 
 import org.springframework.social.oauth2.AccessGrant;
 

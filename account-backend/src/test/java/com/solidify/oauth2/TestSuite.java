@@ -1,6 +1,6 @@
 package com.solidify.oauth2;
 
-import com.solidify.oauth2.security.SecurityTestSuite;
+import com.solidify.oauth2.user.local.SecurityTestSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

@@ -1,4 +1,4 @@
-package com.solidify.oauth2.security;
+package com.solidify.oauth2.user.local;
 
 import org.junit.Test;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,9 +14,9 @@ import static org.mockito.Mockito.when;
 
 public class LocalAuthenticationProviderTest {
 
-    UserRepository userRepository = mock(UserRepository.class);
+    LocalUserRepository localUserRepository = mock(LocalUserRepository.class);
     PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-    AuthenticationProvider provider = new LocalAuthenticationProvider(userRepository, passwordEncoder);
+    AuthenticationProvider provider = new LocalAuthenticationProvider(localUserRepository, passwordEncoder);
 
     @Test(expected = BadCredentialsException.class)
     public void shouldFailToAuthenticateForInvalidUserName() {
@@ -51,21 +51,21 @@ public class LocalAuthenticationProviderTest {
     @Test
     public void shouldAuthenticateUser() {
         // given
-        String userName = "bar";
+        String login = "bar";
         String password = "barsecret";
 
         Authentication input = mock(Authentication.class);
 
-        when(input.getName()).thenReturn(userName);
+        when(input.getName()).thenReturn(login);
         when(input.getCredentials()).thenReturn(password);
 
-        User user = new User();
-        user.setPassword(password);
-        user.setEmail(userName);
-        user.setEnabled(Boolean.TRUE);
+        LocalUser localUser = new LocalUser();
+        localUser.setId(123l);
+        localUser.setPassword(password);
+        localUser.setLogin(login);
 
-        when(userRepository.findByEmailAndEnabled(userName, Boolean.TRUE)).thenReturn(user);
-        when(passwordEncoder.matches(password, user.getPassword())).thenReturn(Boolean.TRUE);
+        when(localUserRepository.findByLogin(login)).thenReturn(localUser);
+        when(passwordEncoder.matches(password, localUser.getPassword())).thenReturn(Boolean.TRUE);
 
         // when
         Authentication authentication = provider.authenticate(input);
@@ -85,13 +85,13 @@ public class LocalAuthenticationProviderTest {
         when(input.getName()).thenReturn(userName);
         when(input.getCredentials()).thenReturn(password);
 
-        User user = new User();
-        user.setPassword(password);
-        user.setEmail(userName);
-        user.setEnabled(Boolean.FALSE);
+        LocalUser localUser = new LocalUser();
+        localUser.setId(123l);
+        localUser.setPassword(password);
+        localUser.setLogin(userName);
 
-        when(userRepository.findByEmailAndEnabled(userName, Boolean.TRUE)).thenReturn(user);
-        when(passwordEncoder.matches(password, user.getPassword())).thenReturn(Boolean.TRUE);
+        when(localUserRepository.findByLogin(userName)).thenReturn(localUser);
+        when(passwordEncoder.matches(password, localUser.getPassword())).thenReturn(Boolean.TRUE);
 
         // when
         provider.authenticate(input);

@@ -1,7 +1,5 @@
-package com.solidify.oauth2.security;
+package com.solidify.oauth2.user.local;
 
-import com.solidify.oauth2.security.resource.UserChangePasswordForm;
-import com.solidify.oauth2.security.resource.UserDto;
 import com.solidify.oauth2.web.ResponseMessage;
 import com.solidify.oauth2.web.ResponseStatus;
 import org.dom4j.IllegalAddException;
@@ -19,8 +17,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserProfileControllerTest {
-    UserRepository repository = mock(UserRepository.class);
+public class LocalUserProfileControllerTest {
+    LocalUserRepository repository = mock(LocalUserRepository.class);
     UserTransformer toDto = mock(UserTransformer.class);
     PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
     UserProfileController controller = new UserProfileController(repository, toDto, passwordEncoder);
@@ -31,23 +29,23 @@ public class UserProfileControllerTest {
         final String userName = "bar@gmail.com";
         setPrincipals(userName);
 
-        UserDto userDetails = mock(UserDto.class);
+        LocalUserDto userDetails = mock(LocalUserDto.class);
 
-        when(repository.findByEmail(userName)).thenReturn(mock(User.class));
-        when(toDto.apply(any(User.class))).thenReturn(userDetails);
+        when(repository.findByLogin(userName)).thenReturn(mock(LocalUser.class));
+        when(toDto.apply(any(LocalUser.class))).thenReturn(userDetails);
         // when
 
         Object userPrincipals = controller.user();
 
         // then
         assertEquals(userDetails, userPrincipals);
-        verify(repository).findByEmail(userName);
+        verify(repository).findByLogin(userName);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldRejectEmptyUpdatePasswordForm() {
         // given
-        UserChangePasswordForm input = new UserChangePasswordForm();
+        LocalCredentialsChangeForm input = new LocalCredentialsChangeForm();
 
         // when
         controller.changeUserPassword(input);
@@ -56,7 +54,7 @@ public class UserProfileControllerTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldRejectInvalidUpdatePasswordForm() {
         // given
-        UserChangePasswordForm input = new UserChangePasswordForm();
+        LocalCredentialsChangeForm input = new LocalCredentialsChangeForm();
         input.setPassword("1");
         input.setConfirmPassword("2");
 
@@ -67,15 +65,15 @@ public class UserProfileControllerTest {
     @Test
     public void shouldUpdateUserPassword() {
         // given
-        UserChangePasswordForm input = new UserChangePasswordForm();
+        LocalCredentialsChangeForm input = new LocalCredentialsChangeForm();
         input.setPassword("bartest");
         input.setConfirmPassword("bartest");
 
         String userLogin = "bar";
         setPrincipals(userLogin);
 
-        User model = new User();
-        when(repository.findByEmail(userLogin)).thenReturn(model);
+        LocalUser model = new LocalUser();
+        when(repository.findByLogin(userLogin)).thenReturn(model);
 
         when(passwordEncoder.encode(any())).thenReturn("saltyPassword");
 
@@ -92,14 +90,14 @@ public class UserProfileControllerTest {
     @Test
     public void shouldThrowExceptionWhenUserIsNotPErsistedInLocalDatabase() {
         // given
-        UserChangePasswordForm input = new UserChangePasswordForm();
+        LocalCredentialsChangeForm input = new LocalCredentialsChangeForm();
         input.setPassword("bartest");
         input.setConfirmPassword("bartest");
 
         String userLogin = "bar";
         setPrincipals(userLogin);
 
-        when(repository.findByEmail(userLogin)).thenReturn(null);
+        when(repository.findByLogin(userLogin)).thenReturn(null);
 
         when(passwordEncoder.encode(any())).thenReturn("saltyPassword");
 
@@ -111,7 +109,7 @@ public class UserProfileControllerTest {
             // ok
         }
         // then
-        verify(repository, never()).save(any(User.class));
+        verify(repository, never()).save(any(LocalUser.class));
         verify(passwordEncoder, never()).encode(anyString());
     }
 

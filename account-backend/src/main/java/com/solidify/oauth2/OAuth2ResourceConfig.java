@@ -1,7 +1,13 @@
 package com.solidify.oauth2;
 
-import com.solidify.oauth2.security.LocalAuthenticationProvider;
-import com.solidify.oauth2.social.*;
+import com.solidify.oauth2.integration.uaas.UaasUserMappingRepository;
+import com.solidify.oauth2.user.social.ProfileProvider;
+import com.solidify.oauth2.user.social.ProfileProviderFactory;
+import com.solidify.oauth2.user.social.SocialTokenService;
+import com.solidify.oauth2.integration.uaas.UaasResourceClient;
+import com.solidify.oauth2.user.social.facebook.FacebookProfileProvider;
+import com.solidify.oauth2.user.social.github.GithubProfileProvider;
+import com.solidify.oauth2.user.local.LocalAuthenticationProvider;
 import org.springframework.aop.framework.Advised;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,11 +25,9 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticat
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerEndpointsConfiguration;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHandlerMapping;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.social.facebook.connect.FacebookServiceProvider;
 import org.springframework.social.github.connect.GitHubServiceProvider;
 import org.springframework.social.oauth2.AccessGrant;
@@ -31,7 +35,6 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.filter.CompositeFilter;
 
 import javax.servlet.Filter;
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -64,6 +67,12 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private LocalAuthenticationProvider authenticationProvider;
+
+    @Autowired
+    private UaasResourceClient uaasResourceClient;
+
+    @Autowired
+    private UaasUserMappingRepository uaasUserMappingRepository;
 
     public int getOrder() {
         return this.order;
@@ -191,40 +200,6 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
         return current;
     }
 
-    private static class NotOAuthRequestMatcher implements RequestMatcher {
-        private FrameworkEndpointHandlerMapping mapping;
-
-        public NotOAuthRequestMatcher(FrameworkEndpointHandlerMapping mapping) {
-            this.mapping = mapping;
-        }
-
-        public boolean matches(HttpServletRequest request) {
-            String requestPath = this.getRequestPath(request);
-            Iterator var3 = this.mapping.getPaths().iterator();
-
-            String path;
-            do {
-                if (!var3.hasNext()) {
-                    return true;
-                }
-
-                path = (String) var3.next();
-            } while (!requestPath.startsWith(this.mapping.getPath(path)));
-
-            return false;
-        }
-
-        private String getRequestPath(HttpServletRequest request) {
-            String url = request.getServletPath();
-            if (request.getPathInfo() != null) {
-                url = url + request.getPathInfo();
-            }
-
-            return url;
-        }
-    }
-
-
     @Bean
     @ConfigurationProperties("github")
     public OAuth2ServerConfig.OAuth2ClientResources github() {
@@ -249,7 +224,9 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
                 new ProfileProviderFactory() {
                     public ProfileProvider createProfileProvider(AccessGrant accessGrant) {
                         return new FacebookProfileProvider(
-                                new FacebookServiceProvider(client1.getClient().getClientId(), client1.getClient().getClientSecret(), null).getApi(accessGrant.getAccessToken())
+                                new FacebookServiceProvider(client1.getClient().getClientId(), client1.getClient().getClientSecret(), null).getApi(accessGrant.getAccessToken()),
+                                uaasUserMappingRepository,
+                                uaasResourceClient
                         );
                     }
                 },
@@ -264,7 +241,9 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
                 new ProfileProviderFactory() {
                     public ProfileProvider createProfileProvider(AccessGrant accessGrant) {
                         return new GithubProfileProvider(
-                                new GitHubServiceProvider(client1.getClient().getClientId(), client1.getClient().getClientSecret()).getApi(accessGrant.getAccessToken())
+                                new GitHubServiceProvider(client1.getClient().getClientId(), client1.getClient().getClientSecret()).getApi(accessGrant.getAccessToken()),
+                                uaasUserMappingRepository,
+                                uaasResourceClient
                         );
                     }
                 },

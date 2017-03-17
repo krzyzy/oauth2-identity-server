@@ -1,6 +1,6 @@
-package com.solidify.oauth2.security.resource;
+package com.solidify.oauth2.user.local;
 
-public class UserChangePasswordForm {
+public class LocalCredentialsChangeForm {
 
     private String password;
     private String confirmPassword;

@@ -1,6 +1,4 @@
-package com.solidify.oauth2.social;
-
-import org.springframework.social.connect.*;
+package com.solidify.oauth2.user.social;
 
 /**
  * Created by tomasz on 19.10.16.

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+
+    <changeSet id="2017-03-12 23:42 few columns" author="TK">
+        <addColumn tableName="users">
+            <column name="uaas_identity_id" type="character varying" />
+            <column name="login" type="character varying" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2017-03-13 21:59 mappings table" author="krzyzy">
+        <createTable tableName="uaas_identity_mapping">
+            <column name="source" type="character varying">
+                <constraints  primaryKey="true"/>
+            </column>
+            <column name="source_id" type="character varying">
+                <constraints  primaryKey="true"/>
+            </column>
+            <column name="uaas_id" type="character varying">
+                <constraints  primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,4 +1,4 @@
-package com.solidify.oauth2.social;
+package com.solidify.oauth2.user.social;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.social.oauth2.AccessGrant;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.Set;
 /**
  * Created by tomasz on 19.10.16.
  */
+@Transactional
 public class SocialTokenService implements ResourceServerTokenServices {
 
     protected final Log logger = LogFactory.getLog(this.getClass());

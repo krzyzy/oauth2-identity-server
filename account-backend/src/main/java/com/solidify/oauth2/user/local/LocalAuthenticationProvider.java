@@ -1,4 +1,4 @@
-package com.solidify.oauth2.security;
+package com.solidify.oauth2.user.local;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,34 +17,34 @@ public class LocalAuthenticationProvider implements AuthenticationProvider {
 
     private static final Set<Class> SUPPORTED_AUTHORISATIONS = new HashSet<>(singletonList(UsernamePasswordAuthenticationToken.class));
 
-    private final UserRepository userRepository;
+    private final LocalUserRepository localUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public LocalAuthenticationProvider(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+    public LocalAuthenticationProvider(LocalUserRepository localUserRepository, PasswordEncoder passwordEncoder) {
+        this.localUserRepository = localUserRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String userName = authentication.getName();
         String password = authentication.getCredentials().toString();
-        User user = userRepository.findByEmailAndEnabled(userName, Boolean.TRUE);
-        validateUser(password, user);
+        LocalUser localUser = localUserRepository.findByLogin(userName);
+        validateUser(localUser, password);
 
         return new UsernamePasswordAuthenticationToken(
-                user.getEmail(),
+                localUser.getLogin(),
                 authentication.getCredentials(),
                 emptyList());
     }
 
-    private void validateUser(String password, User user) {
-        if (user == null || !isPasswordCorrect(password, user)) {
+    private void validateUser(LocalUser localUser, String password) {
+        if (localUser == null || !isPasswordCorrect(localUser, password)) {
             throw new BadCredentialsException("Incorrect user or password");
         }
     }
 
-    private boolean isPasswordCorrect(String password, User user) {
-        return passwordEncoder.matches(password, user.getPassword());
+    private boolean isPasswordCorrect(LocalUser localUser, String password) {
+        return passwordEncoder.matches(password, localUser.getPassword());
     }
 
     public boolean supports(Class<?> aClass) {

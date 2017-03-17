@@ -1,8 +1,5 @@
-package com.solidify.oauth2.security;
+package com.solidify.oauth2.user.local;
 
-import com.solidify.oauth2.security.resource.UserChangePasswordForm;
-import com.solidify.oauth2.security.resource.UserDto;
-import com.solidify.oauth2.security.resource.UserProfileForm;
 import com.solidify.oauth2.web.ResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 
 @RestController
@@ -24,22 +18,15 @@ public class UserProfileController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserProfileController.class);
 
-    private final UserRepository repository;
+    private final LocalUserRepository repository;
     private final UserTransformer toDto;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserProfileController(UserRepository repository, UserTransformer toDto, PasswordEncoder passwordEncoder) {
+    public UserProfileController(LocalUserRepository repository, UserTransformer toDto, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.toDto = toDto;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @RequestMapping("/api/users")
-    public List<UserDto> getUsers() {
-        return stream(repository.findAll().spliterator(), false)
-                .map(toDto)
-                .collect(toList());
     }
 
     @RequestMapping("/api/user")
@@ -49,7 +36,7 @@ public class UserProfileController {
         if (userPrincipals instanceof String) {
             LOGGER.debug("Local user authenticated, requesting details");
             return toDto.apply(
-                    repository.findByEmail(userPrincipals.toString())
+                    repository.findByLogin(userPrincipals.toString())
             );
         }
         LOGGER.debug("Authenticated by external source user, requesting details");
@@ -57,20 +44,20 @@ public class UserProfileController {
     }
 
     @RequestMapping(value = "/api/user/password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseMessage changeUserPassword(@RequestBody UserChangePasswordForm form) {
+    public ResponseMessage changeUserPassword(@RequestBody LocalCredentialsChangeForm form) {
         validatePasswordChangeForm(form);
 
         LOGGER.info("Requested user password change");
 
-        User user = getUser();
-        user.setPassword(passwordEncoder.encode(form.getPassword()));
+        LocalUser localUser = getUser();
+        localUser.setPassword(passwordEncoder.encode(form.getPassword()));
 
-        repository.save(user);
-        LOGGER.info("Changed password for user {}", user.getEmail());
+        repository.save(localUser);
+        LOGGER.info("Changed password for user {}", localUser.getId());
         return ResponseMessage.createOk("Password has been updated");
     }
 
-    private void validatePasswordChangeForm(@RequestBody UserChangePasswordForm form) {
+    private void validatePasswordChangeForm(@RequestBody LocalCredentialsChangeForm form) {
         if (ofNullable(form.getPassword()).map(String::trim).orElse("").isEmpty()) {
             throw new IllegalArgumentException("New password is required");
         }
@@ -79,23 +66,22 @@ public class UserProfileController {
         }
     }
 
-    @RequestMapping(value = "/api/user/profile", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/api/user/profile", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage changeUserProfile(@RequestBody UserProfileForm form) {
 
-        User user = getUser();
+        LocalUser localUser = getUser();
         LOGGER.info("Requested user profile change");
-        user.setFirstName(form.getFirstName());
-        user.setLastName(form.getLastName());
+        // TODO: update identity attributes
 
-        repository.save(user);
-        LOGGER.info("Updated profile for user {}", user.getEmail());
+        repository.save(localUser);
+        LOGGER.info("Updated profile for user {}", localUser.getLogin());
         return ResponseMessage.createOk("Profile has been updated");
     }
 
-    private User getUser() {
+    private LocalUser getUser() {
         Object userPrincipals = getUserPrincipals();
         if (userPrincipals instanceof String) {
-            return ofNullable(repository.findByEmail(userPrincipals.toString()))
+            return ofNullable(repository.findByLogin(userPrincipals.toString()))
                     .orElseThrow(() -> new SecurityException("User could not be found in local resources"));
         }
         throw new SecurityException("User could not be found in local resources");
