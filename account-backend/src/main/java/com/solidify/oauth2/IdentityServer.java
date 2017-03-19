@@ -28,6 +28,7 @@ public class IdentityServer extends WebMvcConfigurerAdapter {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/login").setViewName("login");
+		registry.addViewController("/registration").setViewName("registration");
         registry.addViewController("/").setViewName("redirect:/app/");
         registry.addViewController("/app/").setViewName("forward:/app/index.html");
 	}
