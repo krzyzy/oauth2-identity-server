@@ -1,7 +1,7 @@
 package com.solidify.oauth2;
 
-import com.solidify.oauth2.user.local.LocalAuthenticationProvider;
-import com.solidify.oauth2.user.local.LocalUserRepository;
+import com.solidify.oauth2.common.auth.local.LocalAuthenticationProvider;
+import com.solidify.oauth2.user.LocalUserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -19,7 +19,7 @@ export class ChangePasswordComponent implements OnInit {
 
     save($event) {
         $event.preventDefault();
-        this.http.post('/account/api/user/password', this.form)
+        this.http.post('/account/view/user/password', this.form)
             .map(res => res.json())
             .subscribe(
                 data => this.onPasswordChange(data),

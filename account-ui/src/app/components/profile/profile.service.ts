@@ -8,12 +8,12 @@ export class ProfileService {
     }
 
     getProfile() {
-        return this.http.get('/account/api/user')
+        return this.http.get('/account/api/me')
             .map(res => res.json());
     }
 
     updateProfile(form) {
-        return this.http.post('/account/api/user/profile', form)
+        return this.http.post('/account/view/user/profile', form)
             .map(res => res.json());
     }
 

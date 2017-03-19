@@ -8,7 +8,7 @@ export class DashboardService {
     }
 
     getUsersReport() {
-        return this.http.get('/account/api/dashboard/users/report')
+        return this.http.get('/account/view/dashboard/users/report')
             .map(res => res.json());
     }
 

@@ -1,5 +1,7 @@
 package com.solidify.oauth2.client;
 
+import com.solidify.oauth2.api.ClientDto;
+import com.solidify.oauth2.api.ClientRestController;
 import org.junit.Test;
 
 import java.util.List;

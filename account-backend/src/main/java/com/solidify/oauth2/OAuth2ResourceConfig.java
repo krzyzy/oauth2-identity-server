@@ -1,13 +1,13 @@
 package com.solidify.oauth2;
 
-import com.solidify.oauth2.integration.uaas.UaasUserMappingRepository;
-import com.solidify.oauth2.user.social.ProfileProvider;
-import com.solidify.oauth2.user.social.ProfileProviderFactory;
-import com.solidify.oauth2.user.social.SocialTokenService;
-import com.solidify.oauth2.integration.uaas.UaasResourceClient;
-import com.solidify.oauth2.user.social.facebook.FacebookProfileProvider;
-import com.solidify.oauth2.user.social.github.GithubProfileProvider;
-import com.solidify.oauth2.user.local.LocalAuthenticationProvider;
+import com.solidify.oauth2.common.integration.uaas.UaasUserMappingRepository;
+import com.solidify.oauth2.common.auth.social.ProfileProvider;
+import com.solidify.oauth2.common.auth.social.ProfileProviderFactory;
+import com.solidify.oauth2.common.auth.social.SocialTokenService;
+import com.solidify.oauth2.common.integration.uaas.UaasResourceClient;
+import com.solidify.oauth2.common.auth.social.facebook.FacebookProfileProvider;
+import com.solidify.oauth2.common.auth.social.github.GithubProfileProvider;
+import com.solidify.oauth2.common.auth.local.LocalAuthenticationProvider;
 import org.springframework.aop.framework.Advised;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
