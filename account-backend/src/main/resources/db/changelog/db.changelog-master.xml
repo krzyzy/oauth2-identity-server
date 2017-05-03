@@ -3,12 +3,11 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="
-        http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
-        ">
+        http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
     <include file="/db/changelog/2016-10-16_21_21_add_client_tables.xml"/>
     <include file="/db/changelog/add_user_tables.xml"/>
 
     <include file="/db/changelog/2017-03-12.xml"/>
+    <include file="/db/changelog/2017-05-03_add_user_token_table.xml"/>
 </databaseChangeLog>

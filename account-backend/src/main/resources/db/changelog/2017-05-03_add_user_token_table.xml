@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="2017-05-03 21:00 user token table" author="kno">
+        <createTable tableName="user_token">
+            <column name="token" type="character varying">
+                <constraints  primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints primaryKey="true"  foreignKeyName="user_token__user" references="users(id)" />
+            </column>
+            <column name="expired" type="boolean"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2017-05-03 21:00 add user sequence" author="kno" dbms="postgresql,oracle">
+        <createSequence sequenceName="user_sequence" startValue="2" incrementBy="1"/>
+    </changeSet>
+</databaseChangeLog>

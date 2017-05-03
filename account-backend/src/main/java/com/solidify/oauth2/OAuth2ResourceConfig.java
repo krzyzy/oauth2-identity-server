@@ -124,7 +124,7 @@ public class OAuth2ResourceConfig extends WebSecurityConfigurerAdapter {
 //                .invalidSessionUrl("/login")
 //                .and()
                 .authorizeRequests()
-                .antMatchers("/img*//**", "/webjars*//**", "/registration").permitAll()
+                .antMatchers("/img*//**", "/webjars*//**", "/registration", "/registration/*").permitAll()
                 .antMatchers("/oauth*//**").fullyAuthenticated()
                 .antMatchers("/app*//**").fullyAuthenticated()
                 .anyRequest().fullyAuthenticated()

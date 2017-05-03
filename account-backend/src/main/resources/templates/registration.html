@@ -31,28 +31,32 @@
                                 </div>
                             </header>
                             <div id="login-box-inner">
-                                <form role="form" action="registration.html">
+                                <form role="form" action="" method="post">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                        <input class="form-control" type="text" placeholder="Full name" />
+                                        <input class="form-control" name="firstName" type="text" placeholder="First name" />
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                        <input class="form-control" name="lastName" type="text" placeholder="Last name" />
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                        <input class="form-control" type="text" placeholder="Email address" />
+                                        <input class="form-control" name="email" type="email" placeholder="Email address" />
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input type="password" class="form-control" placeholder="Enter password" />
+                                        <input type="password" name="password" class="form-control" placeholder="Enter password" />
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span>
-                                        <input type="password" class="form-control" placeholder="Re-enter password" />
+                                        <input type="password" name="retypedPassword" class="form-control" placeholder="Re-enter password" />
                                     </div>
                                     <div id="remember-me-wrapper">
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="checkbox-nice">
-                                                    <input type="checkbox" id="terms-cond" checked="checked"/>
+                                                    <input type="checkbox" name="hasAcceptedPolicy" id="terms-cond" checked="checked"/>
                                                     <label for="terms-cond">
                                                         I accept terms and conditions
                                                     </label>
