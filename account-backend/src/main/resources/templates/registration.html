@@ -17,7 +17,7 @@
     <link type="image/x-icon" href="img/logo_favicon.png" rel="shortcut icon"/>
 
 </head>
-<body id="login-page-full"  class="theme-whbl">
+<body id="login-page-full" class="theme-whbl">
 <div id="login-full-wrapper">
     <div class="container">
         <div class="row">
@@ -31,33 +31,38 @@
                                 </div>
                             </header>
                             <div id="login-box-inner">
-                                <form role="form" action="" method="post">
+                                <form role="form" action="" method="post" id="registration-form">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                        <input class="form-control" name="firstName" type="text" placeholder="First name" />
+                                        <input class="form-control" name="firstName" type="text"
+                                               placeholder="First name" required="required"/>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                        <input class="form-control" name="lastName" type="text" placeholder="Last name" />
+                                        <input class="form-control" name="lastName" type="text" placeholder="Last name" required="required"/>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                        <input class="form-control" name="email" type="email" placeholder="Email address" />
+                                        <input class="form-control" name="email" type="email"
+                                               placeholder="Email address" required="required"/>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                        <input type="password" name="password" class="form-control" placeholder="Enter password" />
+                                        <input type="password" name="password" class="form-control"
+                                               placeholder="Enter password" required="required"/>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span>
-                                        <input type="password" name="retypedPassword" class="form-control" placeholder="Re-enter password" />
+                                        <input type="password" name="retypedPassword" class="form-control"
+                                               placeholder="Re-enter password" required="required"/>
                                     </div>
                                     <div id="remember-me-wrapper">
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="checkbox-nice">
-                                                    <input type="checkbox" name="hasAcceptedPolicy" id="terms-cond" checked="checked"/>
-                                                    <label for="terms-cond">
+                                                    <input type="checkbox" name="hasAcceptedPolicy" checked="checked"
+                                                           id="condition-accept-check"/>
+                                                    <label for="condition-accept-check">
                                                         I accept terms and conditions
                                                     </label>
                                                 </div>
@@ -66,7 +71,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <button type="submit" class="btn btn-success col-xs-12">Register</button>
+                                            <button type="submit" class="btn btn-success col-xs-12" id="registration-submit">Register
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
@@ -78,92 +84,26 @@
         </div>
     </div>
 </div>
-<div id="config-tool" class="closed">
-    <a id="config-tool-cog">
-        <i class="fa fa-cog"></i>
-    </a>
-    <div id="config-tool-options">
-        <h4>Layout Options</h4>
-        <ul>
-            <li>
-                <div class="checkbox-nice">
-                    <input type="checkbox" id="config-fixed-header"/>
-                    <label for="config-fixed-header">
-                        Fixed Header
-                    </label>
-                </div>
-            </li>
-            <li>
-                <div class="checkbox-nice">
-                    <input type="checkbox" id="config-fixed-sidebar"/>
-                    <label for="config-fixed-sidebar">
-                        Fixed Left Menu
-                    </label>
-                </div>
-            </li>
-            <li>
-                <div class="checkbox-nice">
-                    <input type="checkbox" id="config-fixed-footer"/>
-                    <label for="config-fixed-footer">
-                        Fixed Footer
-                    </label>
-                </div>
-            </li>
-            <li>
-                <div class="checkbox-nice">
-                    <input type="checkbox" id="config-boxed-layout"/>
-                    <label for="config-boxed-layout">
-                        Boxed Layout
-                    </label>
-                </div>
-            </li>
-            <li>
-                <div class="checkbox-nice">
-                    <input type="checkbox" id="config-rtl-layout"/>
-                    <label for="config-rtl-layout">
-                        Right-to-Left
-                    </label>
-                </div>
-            </li>
-        </ul>
-        <br/>
-        <h4>Skin Color</h4>
-        <ul id="skin-colors" class="clearfix">
-            <li>
-                <a class="skin-changer" data-skin="" data-toggle="tooltip" title="Default" style="background-color: #34495e;">
-                </a>
-            </li>
-            <li>
-                <a class="skin-changer" data-skin="theme-white" data-toggle="tooltip" title="White/Green" style="background-color: #2ecc71;">
-                </a>
-            </li>
-            <li>
-                <a class="skin-changer blue-gradient" data-skin="theme-blue-gradient" data-toggle="tooltip" title="Gradient">
-                </a>
-            </li>
-            <li>
-                <a class="skin-changer" data-skin="theme-turquoise" data-toggle="tooltip" title="Green Sea" style="background-color: #1abc9c;">
-                </a>
-            </li>
-            <li>
-                <a class="skin-changer" data-skin="theme-amethyst" data-toggle="tooltip" title="Amethyst" style="background-color: #9b59b6;">
-                </a>
-            </li>
-            <li>
-                <a class="skin-changer" data-skin="theme-blue" data-toggle="tooltip" title="Blue" style="background-color: #2980b9;">
-                </a>
-            </li>
-            <li>
-                <a class="skin-changer" data-skin="theme-red" data-toggle="tooltip" title="Red" style="background-color: #e74c3c;">
-                </a>
-            </li>
-            <li>
-                <a class="skin-changer" data-skin="theme-whbl" data-toggle="tooltip" title="White/Blue" style="background-color: #3498db;">
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
+<script>
+    $(document).ready(function () {
+        var submitBtn = $('#registration-submit');
 
+        $('#condition-accept-check').on('click', function () {
+            if ($('#condition-accept-check').is(':checked')) {
+                submitBtn.attr('disabled', 'disabled');
+            } else {
+                submitBtn.removeAttr('disabled');
+            }
+        });
+        var form = $('#registration-form');
+        form.submit(function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                return;
+            }
+        });
+
+    });
+</script>
 </body>
 </html>

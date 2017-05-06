@@ -35,7 +35,6 @@ public class UserRegistrationControllerTest {
         form.setEmail("cartman@gmail.com");
         form.setFirstName("Tom");
         form.setLastName("Cruise");
-        form.setHasAcceptedPolicy(Boolean.TRUE);
         form.setPassword(new char[]{'a', 'b', 'c', 'd'});
         form.setRetypedPassword(new char[]{'a', 'b', 'c', 'd'});
         return form;

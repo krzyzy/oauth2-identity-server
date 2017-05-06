@@ -12,8 +12,6 @@ public class RegistrationForm implements UserRegistrationRequest{
 
     private char[] retypedPassword;
 
-    private Boolean hasAcceptedPolicy;
-
     @Override
     public String getFirstName() {
         return firstName;
@@ -58,11 +56,4 @@ public class RegistrationForm implements UserRegistrationRequest{
         this.retypedPassword = retypedPassword;
     }
 
-    public Boolean getHasAcceptedPolicy() {
-        return hasAcceptedPolicy;
-    }
-
-    public void setHasAcceptedPolicy(Boolean hasAcceptedPolicy) {
-        this.hasAcceptedPolicy = hasAcceptedPolicy;
-    }
 }
