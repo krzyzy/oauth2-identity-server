@@ -1,22 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Demo</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
 
+    <link rel="stylesheet" href="../css/theme.css"/>
+    <link rel="stylesheet" href="../webjars/bootstrap/3.2.0/css/bootstrap.min.css"/>
+
+    <script type="text/javascript" src="../webjars/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <link type="image/x-icon" href="../img/logo_favicon.png" rel="shortcut icon"/>
 </head>
-<meta charset="utf-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>Demo</title>
-<meta name="description" content=""/>
-<meta name="viewport" content="width=device-width"/>
-
-<link rel="stylesheet" href="../css/theme.css"/>
-<link rel="stylesheet" href="../webjars/bootstrap/3.2.0/css/bootstrap.min.css"/>
-
-<script type="text/javascript" src="../webjars/jquery/2.1.1/jquery.min.js"></script>
-<script type="text/javascript" src="../webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
-<link type="image/x-icon" href="../img/logo_favicon.png" rel="shortcut icon"/>
-</html>
 
 <body id="login-page-full" class="theme-whbl">
 <div id="login-full-wrapper">
@@ -40,7 +38,7 @@
                                     <div class="row">
                                         <div class="col-xs-12">
                                             You can now go back to
-                                            <a href="../login">
+                                            <a th:href="@{/login}">
                                                 Login page
                                             </a>
                                         </div>

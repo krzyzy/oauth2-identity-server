@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -20,7 +20,6 @@
     <script type="text/javascript" src="../webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
     <link type="image/x-icon" href="../img/logo_favicon.png" rel="shortcut icon"/>
-
 </head>
 <body id="login-page-full" class="theme-whbl">
 <div id="login-full-wrapper">
@@ -42,7 +41,7 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         Go back to
-                                        <a href="../login">
+                                        <a th:href="@{/login}">
                                             Login page
                                         </a>
                                     </div>
