@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 
     <meta charset="utf-8"/>
@@ -30,6 +30,13 @@
                                     <img src="img/logo.png" alt=""/>
                                 </div>
                             </header>
+                            <div th:if="${message}">
+                                <div class="alert alert-danger">
+                                    <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                    <strong>!</strong> <span th:text="${message}"></span>
+                                </div>
+                                <span ></span>
+                            </div>
                             <div id="login-box-inner">
                                 <form role="form" action="" method="post" id="registration-form">
                                     <div class="input-group">

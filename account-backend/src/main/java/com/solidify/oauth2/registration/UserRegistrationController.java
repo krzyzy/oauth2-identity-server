@@ -1,5 +1,7 @@
 package com.solidify.oauth2.registration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +16,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 @Controller
 public class UserRegistrationController {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserRegistrationController.class);
     private final UserRegistrationService service;
 
     @Autowired
@@ -23,11 +25,16 @@ public class UserRegistrationController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String submitRegistrationForm(@ModelAttribute RegistrationForm form) {
-        validateRegistrationForm(form);
+    public String submitRegistrationForm(@ModelAttribute RegistrationForm form, Model model) {
+        try {
+            validateRegistrationForm(form);
 
-        service.registerUser(form);
-
+            service.registerUser(form);
+        } catch (IllegalArgumentException ex) {
+            LOGGER.info("Registration form validation error {}", ex.getMessage());
+            model.addAttribute("message", ex.getMessage());
+            return "registration";
+        }
         return "registration/success";
     }
 

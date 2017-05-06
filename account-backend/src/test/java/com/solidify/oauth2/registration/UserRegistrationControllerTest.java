@@ -1,6 +1,7 @@
 package com.solidify.oauth2.registration;
 
 import org.junit.Test;
+import org.springframework.ui.Model;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -13,8 +14,9 @@ public class UserRegistrationControllerTest {
     public void should_register_new_user() {
         // given
         RegistrationForm form = createRegistrationForm();
+        Model model = mock(Model.class);
         // when
-        controller.submitRegistrationForm(form);
+        controller.submitRegistrationForm(form, model);
         // then
         verify(service).registerUser(form);
     }
