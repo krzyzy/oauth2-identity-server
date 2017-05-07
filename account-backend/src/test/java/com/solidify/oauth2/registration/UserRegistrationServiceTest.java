@@ -1,5 +1,6 @@
 package com.solidify.oauth2.registration;
 
+import com.solidify.oauth2.mail.MailService;
 import com.solidify.oauth2.user.LocalUser;
 import com.solidify.oauth2.user.LocalUserRepository;
 import org.junit.Test;
@@ -16,8 +17,13 @@ public class UserRegistrationServiceTest {
     private LocalUserRepository userRepository = mock(LocalUserRepository.class);
     private PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
     private UserTokenRepository tokenRepository = mock(UserTokenRepository.class);
+    private MailService mailService = mock(MailService.class);
 
-    private UserRegistrationService service = new UserRegistrationService(userRepository, passwordEncoder, tokenRepository);
+    private UserRegistrationService service = new UserRegistrationService(
+            userRepository,
+            passwordEncoder,
+            tokenRepository,
+            mailService);
 
     @Test
     public void should_reject_new_user_registration_when_email_already_taken() {

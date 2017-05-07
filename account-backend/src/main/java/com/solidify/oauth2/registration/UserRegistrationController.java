@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -28,20 +27,25 @@ public class UserRegistrationController {
     public String submitRegistrationForm(@ModelAttribute RegistrationForm form, Model model) {
         try {
             validateRegistrationForm(form);
-
             service.registerUser(form);
         } catch (IllegalArgumentException ex) {
             LOGGER.info("Registration form validation error {}", ex.getMessage());
             model.addAttribute("message", ex.getMessage());
             return "registration";
         }
-        return "registration/success";
+        model.addAttribute("form", new RegistrationTokenForm());
+        return "registration/token-registration-form";
     }
 
-    @RequestMapping(value = "/registration/{token}", method = RequestMethod.GET)
-    public String registerToken(@PathVariable("token") String token) {
-        service.registerToken(token);
-        return "registration/token-registered";
+    @RequestMapping(value = "/registration/confirmation", method = RequestMethod.POST)
+    public String registerTokenForm(@ModelAttribute RegistrationTokenForm form, Model model) {
+        try {
+            service.registerToken(form.getToken());
+            model.addAttribute("message", "Your accont has been activated");
+        } catch (Exception ex) {
+            model.addAttribute("error", ex.getMessage());
+        }
+        return "registration/token-registration-form";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)

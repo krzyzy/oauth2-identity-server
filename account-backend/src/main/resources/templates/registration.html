@@ -8,13 +8,13 @@
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width"/>
 
-    <link rel="stylesheet" href="css/theme.css"/>
-    <link rel="stylesheet" href="webjars/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/theme.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}"/>
 
-    <script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/2.1.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/3.2.0/js/bootstrap.min.js}"></script>
 
-    <link type="image/x-icon" href="img/logo_favicon.png" rel="shortcut icon"/>
+    <link type="image/x-icon" th:href="@{/img/logo_favicon.png}" rel="shortcut icon"/>
 
 </head>
 <body id="login-page-full" class="theme-whbl">
@@ -27,7 +27,7 @@
                         <div class="col-xs-12">
                             <header id="login-header">
                                 <div id="login-logo">
-                                    <img src="img/logo.png" alt=""/>
+                                    <img th:src="@{img/logo.png}" alt=""/>
                                 </div>
                             </header>
                             <div th:if="${message}">
@@ -35,7 +35,6 @@
                                     <i class="fa fa-times-circle fa-fw fa-lg"></i>
                                     <strong>!</strong> <span th:text="${message}"></span>
                                 </div>
-                                <span ></span>
                             </div>
                             <div id="login-box-inner">
                                 <form role="form" action="" method="post" id="registration-form">

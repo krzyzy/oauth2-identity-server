@@ -24,9 +24,10 @@ public class UserRegistrationControllerTest {
     @Test
     public void should_process_verification_token() {
         final String token = "1";
-
+        RegistrationTokenForm form = new RegistrationTokenForm();
+        form.setToken(token);
         // when
-        controller.registerToken(token);
+        controller.registerTokenForm(form, mock(Model.class));
 
         // then
         verify(service).registerToken(token);

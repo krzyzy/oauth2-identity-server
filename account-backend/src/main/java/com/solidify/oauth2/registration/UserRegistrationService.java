@@ -1,5 +1,6 @@
 package com.solidify.oauth2.registration;
 
+import com.solidify.oauth2.mail.MailService;
 import com.solidify.oauth2.user.LocalUser;
 import com.solidify.oauth2.user.LocalUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +9,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static java.util.Collections.singletonList;
+
 @Service
 public class UserRegistrationService {
 
     private final LocalUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserTokenRepository tokenRepository;
+    private final MailService mailService;
 
     @Autowired
     public UserRegistrationService(LocalUserRepository userRepository,
                                    PasswordEncoder passwordEncoder,
-                                   UserTokenRepository tokenRepository) {
+                                   UserTokenRepository tokenRepository,
+                                   MailService mailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenRepository = tokenRepository;
+        this.mailService = mailService;
     }
 
     void registerUser(UserRegistrationRequest form) {
@@ -34,6 +40,7 @@ public class UserRegistrationService {
         UserToken token = createUserToken();
         token.setUser(user);
         user.getTokens().add(token);
+        sendTokenEmail(user, token.getToken());
 
         userRepository.save(user);
         tokenRepository.save(token);
@@ -52,6 +59,13 @@ public class UserRegistrationService {
         user.setEnabled(Boolean.TRUE);
         userRepository.save(user);
         tokenRepository.save(token);
+    }
+
+    private void sendTokenEmail(LocalUser user, String token) {
+        mailService.send(
+                singletonList(user.getEmail()),
+                "Registration verification",
+                "Thank you for the registration. Your token is: " + token);
     }
 
     private UserToken createUserToken() {
