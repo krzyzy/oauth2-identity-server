@@ -31,6 +31,7 @@ public class UserRegistrationController {
         } catch (IllegalArgumentException ex) {
             LOGGER.info("Registration form validation error {}", ex.getMessage());
             model.addAttribute("message", ex.getMessage());
+            model.addAttribute("form", form);
             return "registration";
         }
         model.addAttribute("form", new RegistrationTokenForm());
