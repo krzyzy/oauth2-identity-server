@@ -19,4 +19,10 @@
     <changeSet id="2017-05-03 21:00 add user sequence" author="kno" dbms="postgresql,oracle">
         <createSequence sequenceName="user_sequence" startValue="2" incrementBy="1"/>
     </changeSet>
+
+    <changeSet id="2017-05-07 23:42 add expiration column" author="kno">
+        <addColumn tableName="user_token">
+            <column name="expiration_date" type="character varying" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

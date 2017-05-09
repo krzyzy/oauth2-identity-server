@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Collections.singletonList;
@@ -52,13 +54,20 @@ public class UserRegistrationService {
             throw new IllegalArgumentException("Invalid token");
         }
         if (token.isExpired()) {
-            throw new IllegalArgumentException("Token is expired");
+            throw new IllegalArgumentException("Token has expired");
+        }
+        if (LocalDateTime.parse(token.getExpirationDate()).isBefore(getLocalDateTime())) {
+            throw new IllegalArgumentException("Token has expired");
         }
         token.setExpired(true);
         LocalUser user = token.getUser();
         user.setEnabled(Boolean.TRUE);
         userRepository.save(user);
         tokenRepository.save(token);
+    }
+
+    private LocalDateTime getLocalDateTime(){
+        return LocalDateTime.now();
     }
 
     private void sendTokenEmail(LocalUser user, String token) {
@@ -72,6 +81,7 @@ public class UserRegistrationService {
         UserToken token = new UserToken();
         token.setToken(UUID.randomUUID().toString());
         token.setExpired(Boolean.FALSE);
+        token.setExpirationDate(getLocalDateTime().plusMinutes(30).toString());
         return token;
     }
 
