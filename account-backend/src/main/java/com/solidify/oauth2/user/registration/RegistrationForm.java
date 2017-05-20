@@ -1,4 +1,4 @@
-package com.solidify.oauth2.registration;
+package com.solidify.oauth2.user.registration;
 
 public class RegistrationForm implements UserRegistrationRequest{
 

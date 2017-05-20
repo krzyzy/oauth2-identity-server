@@ -25,4 +25,10 @@
             <column name="expiration_date" type="character varying" />
         </addColumn>
     </changeSet>
+
+    <changeSet id="2017-05-17 23:42 add type column" author="kno">
+        <addColumn tableName="user_token">
+            <column name="type" type="character varying" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

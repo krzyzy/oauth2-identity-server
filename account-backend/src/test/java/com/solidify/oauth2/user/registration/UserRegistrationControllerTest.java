@@ -1,4 +1,4 @@
-package com.solidify.oauth2.registration;
+package com.solidify.oauth2.user.registration;
 
 import org.junit.Test;
 import org.springframework.ui.Model;
@@ -30,7 +30,7 @@ public class UserRegistrationControllerTest {
         controller.registerTokenForm(form, mock(Model.class));
 
         // then
-        verify(service).registerToken(token);
+        verify(service).activateUserByToken(token);
     }
 
     private RegistrationForm createRegistrationForm() {

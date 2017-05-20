@@ -1,10 +1,7 @@
-package com.solidify.oauth2.registration;
+package com.solidify.oauth2.user;
 
-
-import com.solidify.oauth2.user.LocalUser;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_token")
@@ -22,6 +19,10 @@ public class UserToken {
 
     @Column(name = "expiration_date")
     private String expirationDate;
+
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private TokenType type;
 
     public LocalUser getUser() {
         return user;
@@ -54,4 +55,17 @@ public class UserToken {
     public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
     }
+
+    public TokenType getType() {
+        return type;
+    }
+
+    public void setType(TokenType type) {
+        this.type = type;
+    }
+
+    public enum TokenType {
+        REGISTRATION, PASSWORD_CHANGE
+    }
+
 }

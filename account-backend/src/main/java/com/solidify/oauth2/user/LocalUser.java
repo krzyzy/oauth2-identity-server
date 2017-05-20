@@ -1,8 +1,5 @@
 package com.solidify.oauth2.user;
 
-import com.solidify.oauth2.registration.UserToken;
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +37,7 @@ public class LocalUser {
     private String lastName;
 
     @OneToMany(orphanRemoval = true, mappedBy = "user")
-    private List<UserToken> tokens = new LinkedList<>();
+    private List<UserToken> registrationTokens = new LinkedList<>();
 
     public String getEmail() {
         return email;
@@ -74,12 +71,12 @@ public class LocalUser {
         this.password = password;
     }
 
-    public List<UserToken> getTokens() {
-        return tokens;
+    public List<UserToken> getRegistrationTokens() {
+        return registrationTokens;
     }
 
-    public void setTokens(List<UserToken> tokens) {
-        this.tokens = tokens;
+    public void setRegistrationTokens(List<UserToken> registrationTokens) {
+        this.registrationTokens = registrationTokens;
     }
 
     public Boolean getEnabled() {
@@ -105,4 +102,5 @@ public class LocalUser {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
 }

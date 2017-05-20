@@ -1,15 +1,13 @@
-package com.solidify.oauth2.registration;
+package com.solidify.oauth2.user.registration;
 
 import com.solidify.oauth2.mail.MailService;
 import com.solidify.oauth2.user.LocalUser;
 import com.solidify.oauth2.user.LocalUserRepository;
+import com.solidify.oauth2.user.TokenService;
+import com.solidify.oauth2.user.UserToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.UUID;
 
 import static java.util.Collections.singletonList;
 
@@ -18,17 +16,17 @@ public class UserRegistrationService {
 
     private final LocalUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserTokenRepository tokenRepository;
     private final MailService mailService;
+    private final TokenService tokenService;
 
     @Autowired
     public UserRegistrationService(LocalUserRepository userRepository,
                                    PasswordEncoder passwordEncoder,
-                                   UserTokenRepository tokenRepository,
-                                   MailService mailService) {
+                                   MailService mailService,
+                                   TokenService tokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.tokenRepository = tokenRepository;
+        this.tokenService = tokenService;
         this.mailService = mailService;
     }
 
@@ -39,35 +37,20 @@ public class UserRegistrationService {
             throw new IllegalArgumentException("Email already taken");
         }
 
-        UserToken token = createUserToken();
+        UserToken token = tokenService.createToken(UserToken.TokenType.REGISTRATION);
         token.setUser(user);
-        user.getTokens().add(token);
+        user.getRegistrationTokens().add(token);
         sendTokenEmail(user, token.getToken());
-
+        tokenService.save(token);
         userRepository.save(user);
-        tokenRepository.save(token);
     }
 
-    void registerToken(String tokenId) {
-        UserToken token = tokenRepository.findOne(tokenId);
-        if (token == null) {
-            throw new IllegalArgumentException("Invalid token");
-        }
-        if (token.isExpired()) {
-            throw new IllegalArgumentException("Token has expired");
-        }
-        if (LocalDateTime.parse(token.getExpirationDate()).isBefore(getLocalDateTime())) {
-            throw new IllegalArgumentException("Token has expired");
-        }
-        token.setExpired(true);
+    void activateUserByToken(String tokenId) {
+        UserToken token = tokenService.getToken(tokenId, UserToken.TokenType.REGISTRATION);
         LocalUser user = token.getUser();
         user.setEnabled(Boolean.TRUE);
         userRepository.save(user);
-        tokenRepository.save(token);
-    }
-
-    private LocalDateTime getLocalDateTime(){
-        return LocalDateTime.now();
+        tokenService.expireToken(token);
     }
 
     private void sendTokenEmail(LocalUser user, String token) {
@@ -75,14 +58,6 @@ public class UserRegistrationService {
                 singletonList(user.getEmail()),
                 "Registration verification",
                 "Thank you for the registration. Your token is: " + token);
-    }
-
-    private UserToken createUserToken() {
-        UserToken token = new UserToken();
-        token.setToken(UUID.randomUUID().toString());
-        token.setExpired(Boolean.FALSE);
-        token.setExpirationDate(getLocalDateTime().plusMinutes(30).toString());
-        return token;
     }
 
     private LocalUser createUser(UserRegistrationRequest form) {

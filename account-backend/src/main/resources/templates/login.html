@@ -44,8 +44,9 @@
                                             <input type="password" class="form-control" placeholder="Password"
                                                    name="password"/>
                                         </div>
-                                        <!--<div id="remember-me-wrapper">
+                                        <div id="remember-me-wrapper">
                                             <div class="row">
+                                                <!--
                                                 <div class="col-xs-6">
                                                     <div class="checkbox-nice">
                                                         <input type="checkbox" id="remember-me" checked="checked">
@@ -53,12 +54,12 @@
                                                             Remember me
                                                         </label>
                                                     </div>
-                                                </div>
-                                                <a href="forgot-password-full.html" id="login-forget-link" class="col-xs-6">
+                                                </div>-->
+                                                <a th:href="@{/password/forgot-password}" id="login-forget-link" class="col-xs-6">
                                                     Forgot password?
                                                 </a>
                                             </div>
-                                        </div>-->
+                                        </div>
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <button type="submit" class="btn btn-success col-xs-12">Login</button>

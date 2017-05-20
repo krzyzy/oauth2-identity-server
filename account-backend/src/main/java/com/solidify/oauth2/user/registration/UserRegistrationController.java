@@ -1,4 +1,4 @@
-package com.solidify.oauth2.registration;
+package com.solidify.oauth2.user.registration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +41,7 @@ public class UserRegistrationController {
     @RequestMapping(value = "/registration/confirmation", method = RequestMethod.POST)
     public String registerTokenForm(@ModelAttribute RegistrationTokenForm form, Model model) {
         try {
-            service.registerToken(form.getToken());
+            service.activateUserByToken(form.getToken());
             model.addAttribute("message", "Your accont has been activated");
         } catch (Exception ex) {
             model.addAttribute("error", ex.getMessage());
