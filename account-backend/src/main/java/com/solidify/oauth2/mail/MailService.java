@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface MailService {
 
-    void send(List<String> recipents, String body, String title);
+    void send(List<String> recipients, String body, String title);
 }
